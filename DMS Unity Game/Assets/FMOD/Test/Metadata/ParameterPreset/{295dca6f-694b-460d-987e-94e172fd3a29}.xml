@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{295dca6f-694b-460d-987e-94e172fd3a29}">
+		<property name="name">
+			<value>Sanity</value>
+		</property>
+		<relationship name="folder">
+			<destination>{48af4b9f-8f22-4d6a-b61f-e3232410b93d}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{4c64568d-1abd-4760-bca2-dbd7a93a84c3}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{4c64568d-1abd-4760-bca2-dbd7a93a84c3}">
+		<property name="maximum">
+			<value>100</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
