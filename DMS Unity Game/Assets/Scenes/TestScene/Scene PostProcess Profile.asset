@@ -96,6 +96,54 @@ MonoBehaviour:
     m_Value: 0
     min: -100
     max: 100
+--- !u!114 &-2779425941005357421
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: PP_SpreadScript
+  m_EditorClassIdentifier: Assembly-CSharp::PP_SpreadScript
+  active: 1
+  <displayName>k__BackingField: 
+  m_AdvancedMode: 0
+  m_IsInitialized: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+    max: 1
+  _BloodTexture: {fileID: 0}
+  _Noise: {fileID: 0}
+  m_Material: {fileID: 0}
+--- !u!114 &-44038506185032713
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adaf3469f8601cd4bb2088e72d60f7bf, type: 3}
+  m_Name: PP_SpreadScript
+  m_EditorClassIdentifier: 
+  active: 1
+  <displayName>k__BackingField: 
+  m_AdvancedMode: 0
+  m_IsInitialized: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+    max: 1
+  _BloodTexture: {fileID: 0}
+  _Noise: {fileID: 0}
+  m_Material: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +160,7 @@ MonoBehaviour:
   - {fileID: -6655779379860192965}
   - {fileID: -6234445525749986974}
   - {fileID: 2109130741762881219}
+  - {fileID: 3121147962263079049}
 --- !u!114 &2109130741762881219
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -135,3 +184,45 @@ MonoBehaviour:
   gain:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
+--- !u!114 &3121147962263079049
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2009d7ffac6073b42808f393a0c16308, type: 3}
+  m_Name: PP_Spread
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+    max: 1
+  _BloodTexture: {fileID: 2800000, guid: d6e5faacec8f4a6478cbe4141b209ec2, type: 3}
+  _Noise: {fileID: 2800000, guid: bab23a01e42a65844ab024efd0950ee4, type: 3}
+--- !u!114 &5101424531944911439
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2009d7ffac6073b42808f393a0c16308, type: 3}
+  m_Name: PP_SpreadScript
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
+    max: 1
+  _BloodTexture: {fileID: 2800000, guid: bab23a01e42a65844ab024efd0950ee4, type: 3}
+  _Noise: {fileID: 2800000, guid: d6e5faacec8f4a6478cbe4141b209ec2, type: 3}
