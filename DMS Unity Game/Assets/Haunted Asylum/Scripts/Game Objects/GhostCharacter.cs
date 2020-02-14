@@ -52,11 +52,13 @@ public class GhostCharacter : MonoBehaviour
     FMOD.Studio.EventInstance AbilityInstance;
     void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 144;
         PauseMenu = new PausedState();
         PV = GetComponent<PhotonView>();
         UIElements.SetActive(false);
         PlayerAwake();
-        Application.targetFrameRate = 144;
+
         ThisAudioManager = new AudioManager(SFXEventNames, MusicEventNames, head);
 
 

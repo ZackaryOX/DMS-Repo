@@ -45,12 +45,13 @@ public class Character : MonoBehaviour
 
     void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 144;
         PauseMenu = new PausedState();
         PV = GetComponent<PhotonView>();
         UIElements.SetActive(false);
         PlayerAwake();
         //PV.RPC("PlayerAwake", RpcTarget.AllBuffered);
-        Application.targetFrameRate = 144;
         ThisAudioManager = new AudioManager(SFXEventNames, MusicEventNames, head);
         Debug.Log("CHARACTER CREATED");
     }
@@ -99,7 +100,7 @@ public class Character : MonoBehaviour
             hotbar.Update();
             input.Update();
             MyCamera.SetActive(true);
-            MyFBOCam.SetActive(true);
+            //MyFBOCam.SetActive(true);
             UIElements.SetActive(true);
             Vector3 Data = Player1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
@@ -189,7 +190,7 @@ public class Character : MonoBehaviour
         input = new InputManager();
         hotbar = new PlayerInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber);
         MyCamera.SetActive(false);
-        MyFBOCam.SetActive(false);
+        //MyFBOCam.SetActive(false);
         ThisPlayer = new Player(gameObject, head, hotbar, false, input, HandTarget);
         Player1Stats = new StatObserver(ThisPlayer);
         Player1Score = new ScoreObserver(ThisPlayer);
