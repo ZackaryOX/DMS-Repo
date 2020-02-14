@@ -23,6 +23,9 @@ public class Player : Entity
         Sanity = 100;
         input = tempInput;
 
+        Rotlist.Add(X);
+        Rotlist.Add(Y);
+        Rotlist.Add(Z);
         if (!isEditor)
         {
             PlayerNumber = Players;
@@ -110,6 +113,7 @@ public class Player : Entity
         {
             entry.Value.Update();
         }
+
     }
     
     public bool AddItemToInventory(string pickupname) {
@@ -170,22 +174,69 @@ public class Player : Entity
     {
         DefaultHandTarget = newhand;
     }
+
+    private float X = 15;
+    private float Y = -90;
+    private float Z = -180;
+    int index = 0;
+
+    List<float> Rotlist = new List<float>();
     public void PutHandOut()
     {
         if (ThisInventory.IsItemInHand())
         {
-            Animator ThisAnim = this.GetObject().GetComponent<Animator>();
-            Vector3 worldpos = new Vector3(0.75f, 0, 3);
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                index = 0;
+                
+            }
+            else if (Input.GetKeyDown(KeyCode.Y))
+            {
+                index = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                index = 2;
+            }
 
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Rotlist[index] += 1;
+
+            }
+
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Rotlist[index] -= 1;
+                Debug.Log("doing");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Debug.Log("X: " + X + " Y: " + Y + " Z: " + Z);
+                
+            }
+            
+            X = Rotlist[0];
+            Y = Rotlist[1];
+            Z = Rotlist[2];
+            Animator ThisAnim = this.GetObject().GetComponent<Animator>();
+            Vector3 worldpos = new Vector3(2f, 3, 3);
+            float YTilt = (ThisInput.GetPitch() / 65) * 3;
             Vector2 mousePos = Input.mousePosition;
-            worldpos.x = mousePos.x;
-            worldpos.y = mousePos.y;
-            Vector3 newVec = Camera.main.ScreenToWorldPoint(worldpos);
+            worldpos.x += mousePos.x;
+            worldpos.y += mousePos.y;
+
+            Vector3 newVec = Camera.main.ScreenToWorldPoint(worldpos) + new Vector3(0, -YTilt,0);
 
             ThisAnim.SetIKPosition(AvatarIKGoal.RightHand, newVec);
             ThisAnim.SetIKPositionWeight(AvatarIKGoal.RightHand, 0.42f);
 
-            ThisAnim.SetIKRotation(AvatarIKGoal.RightHand, Quaternion.Euler(new Vector3(27.0f, -50.0f, -160.0f) + this.GetRotationEuler()));
+            Vector3 First = new Vector3(15, -90 + ThisInput.GetNewRot().y, -180 - ThisInput.GetNewRot().x);
+            Vector3 Second = this.GetRotationEuler();
+
+            ThisAnim.SetIKRotation(AvatarIKGoal.RightHand, Quaternion.Euler( First ));
             ThisAnim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
         }
     }

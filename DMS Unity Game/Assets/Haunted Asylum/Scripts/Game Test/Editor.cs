@@ -144,10 +144,6 @@ public class Editor : MonoBehaviour
     {
         ThisAudioManager.SetMasterVolume(temp);
     }
-    public void RebindKey(string KeyName)
-    {
-        input.RebindKey(KeyName);
-    }
     public void StoreText(Text KeyText)
     {
         input.StoreText(KeyText);

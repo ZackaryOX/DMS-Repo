@@ -11,6 +11,7 @@ public class InputManager
     string waitingKeyName;
     Text waitingKeyText;
 
+    //Set up keys
     public InputManager()
     {
         Keys["forward"] = KeyCode.W;
@@ -36,6 +37,8 @@ public class InputManager
         Keys["escape"] = KeyCode.Escape;
     }
 
+
+    //Check for Input
     public void Update()
     {
         if (waitingForKey)
@@ -46,8 +49,10 @@ public class InputManager
                 {
                     if (Input.GetKeyDown(kc))
                     {
+                        //Key from dictionary = new key
                         Keys[waitingKeyName] = kc;
 
+                        //Change Button text to new key
                         waitingKeyText.text = kc.ToString();
 
                         waitingForKey = false;
@@ -58,17 +63,12 @@ public class InputManager
         }
     }
 
-    public void RebindKey(string KeyName)
-    {
-        if (!waitingForKey)
-            waitingKeyName = KeyName;
-
-    }
-
+    //Get reference for Text object
     public void StoreText(Text KeyText)
     {
         if (!waitingForKey)
             waitingKeyText = KeyText;
+        waitingKeyName = KeyText.name;
         waitingForKey = true;
     }
 

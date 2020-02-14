@@ -61,12 +61,12 @@ public class QuestManager : MonoBehaviour
         for (int i = 0; i < Quests.Count; i++)
         {
             Images.Add(Instantiate(background, background.transform.parent));
-            Images[i].transform.localPosition = new Vector3(660, 485 - 75 * i, 0);
 
             Texts.Add(Instantiate(text, text.transform.parent));
-            Texts[i].transform.localPosition = new Vector3(660, 485 - 75 * i, 0);
             Texts[i].text = Quests[i].getName();
         }
+        Images[0].transform.localPosition = new Vector3(660, 485, 0);
+        Texts[0].transform.localPosition = new Vector3(660, 485, 0);
         Images[0].color = Color.white;
     }
 
@@ -76,24 +76,25 @@ public class QuestManager : MonoBehaviour
         //Remove quest if completed
         if (Quests.Count > 0 && Quests[0].getCompletion() == true)
         {
+            //Remove the active quest
             Quests.RemoveAt(0);
             Images[0].transform.localPosition = new Vector3(-1000, -1000, 0);
             Images.RemoveAt(0);
             Texts[0].transform.localPosition = new Vector3(-1000, -1000, 0);
             Texts.RemoveAt(0);
 
-            for (int i = 0; i < Images.Count; i++)
-            {
-                Images[i].transform.localPosition += new Vector3(0, 75, 0);
-                Texts[i].transform.localPosition += new Vector3(0, 75, 0);
-            }
+            //Move next quest to screen
+            Images[0].transform.localPosition = new Vector3(660, 485, 0);
+            Texts[0].transform.localPosition = new Vector3(660, 485, 0);
 
             if (Quests.Count == 0)
             {
+                //Deactivate this quest
                 this.gameObject.SetActive(false);
             }
             else
             {
+                //Activate next quest
                 Quests[0].Activate();
                 Images[0].sprite = topQuest;
             }

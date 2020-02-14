@@ -52,11 +52,13 @@ public class GhostCharacter : MonoBehaviour
     FMOD.Studio.EventInstance AbilityInstance;
     void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 144;
         PauseMenu = new PausedState();
         PV = GetComponent<PhotonView>();
         UIElements.SetActive(false);
         PlayerAwake();
-        Application.targetFrameRate = 144;
+
         ThisAudioManager = new AudioManager(SFXEventNames, MusicEventNames, head);
 
 
@@ -154,10 +156,6 @@ public class GhostCharacter : MonoBehaviour
     public void SetMasterVolume(float temp)
     {
         ThisAudioManager.SetMasterVolume(temp);
-    }
-    public void RebindKey(string KeyName)
-    {
-        input.RebindKey(KeyName);
     }
     public void StoreText(Text KeyText)
     {

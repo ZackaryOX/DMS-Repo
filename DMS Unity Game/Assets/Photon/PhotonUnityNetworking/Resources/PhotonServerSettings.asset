@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 2780d48e-aa22-43cb-8968-bdcb3fde18f0
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: 0
+    AppVersion: 
     UseNameServer: 1
     FixedRegion: 
     Server: 
@@ -48,4 +48,4 @@ MonoBehaviour:
   - StopGhostAudio
   - UpdatePlayer
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
