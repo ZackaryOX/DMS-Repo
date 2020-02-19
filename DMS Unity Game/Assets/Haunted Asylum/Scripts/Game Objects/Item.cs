@@ -23,6 +23,7 @@ public class Item : MonoBehaviour
             //Debug.Log(ThisItem.GetPosition());
             if (Player.AllPlayers[0].AddItemToInventory(ThisItem.GetName()))
             {
+                Player.AllPlayers[0].AddCoroutineToFire(Player.AllPlayers[0].PickUpCoroutine());
                 transform.parent = null;
                 GetComponent<MeshCollider>().isTrigger = true;
                 GetComponent<mouseHovor>().enabled = false;

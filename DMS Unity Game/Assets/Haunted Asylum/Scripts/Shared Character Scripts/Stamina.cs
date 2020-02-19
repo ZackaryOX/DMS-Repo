@@ -38,7 +38,7 @@ public class Stamina
 
         CurrentStam -= Decrease * deltatime * Deduction;
 
-        Returnval = 2 * Deduction > 0 ? 2 * Deduction : 1;
+        Returnval = Deduction > 0 ? 2 * Deduction : 0;
 
         return Returnval;
     }

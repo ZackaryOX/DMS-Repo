@@ -254,6 +254,8 @@ public class PlayerInput
         if(currentstate.GetRun() && Vertical > 0)
         Running += GetInput("run");
 
+
+
         if(currentstate.GetJump())
         ComputeJump(playerstam);
 
@@ -280,12 +282,22 @@ public class PlayerInput
         // Debug.Log("AFTER" + VerticalVelocity);
 
         //Reduces diagonal speed if A/D + W/S are pressed together
-        CurrentSpeed = Vertical != 0 && Horizontal != 0 ? Speed / 2 : Speed;
+        CurrentSpeed = Vertical != 0 && Horizontal != 0 ? Speed / 1.5f : Speed;
 
 
-        CurrentSpeed = (Running > 0) && IsJumping == false ? CurrentSpeed * playerstam.DecreaseStam(Time.deltaTime) : CurrentSpeed;
+        float SpeedMod = (Running > 0) && IsJumping == false ? CurrentSpeed * playerstam.DecreaseStam(Time.deltaTime) : 0;
 
-        if(Running == 0 && !IsJumping)
+        if (Running > 0 && SpeedMod > 0)
+        {
+            _animator.SetBool("IsRunning", true);
+            CurrentSpeed = SpeedMod;
+        }
+        else
+        {
+            _animator.SetBool("IsRunning", false);
+        }
+
+        if (Running == 0 && !IsJumping)
         playerstam.IncreaseStam(Time.deltaTime, Mathf.Abs(Vertical) + Mathf.Abs(Horizontal));
 
 

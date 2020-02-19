@@ -28,22 +28,22 @@ public class PluginTesterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Door.AllDoors.Count > 0 && Door.AllDoors[gameObject.name].GetIsOpened() == true && check == false)
-        {
-            writeTime(Timer.ElapsedTime);
-            check = true;
-            Debug.Log(Timer.ElapsedTime);
-        }
+        //if (Door.AllDoors.Count > 0 && Door.AllDoors[gameObject.name].GetIsOpened() == true && check == false)
+        //{
+        //    writeTime(Timer.ElapsedTime);
+        //    check = true;
+        //    Debug.Log(Timer.ElapsedTime);
+        //}
 
-        if (Input.GetKey(KeyCode.N))
-        {
-            writeTime(T.ReturnTime());
-        }
+        //if (Input.GetKey(KeyCode.N))
+        //{
+        //    writeTime(T.ReturnTime());
+        //}
 
-        if (Input.GetKey(KeyCode.Z))
-        {
-            Debug.Log(readTime());
-        }
+        //if (Input.GetKey(KeyCode.Z))
+        //{
+        //    Debug.Log(readTime());
+        //}
 
 
     }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : Entity
 {
     public static Dictionary<int, Player> AllPlayers = new Dictionary<int, Player>();
+    public Queue<IEnumerator> CoroutinesToFire = new Queue<IEnumerator>();
     static int Players = 0;
     //Constructor
     public Player(GameObject thisobject, GameObject temphead, PlayerInventory tempinv, bool isEditor, InputManager tempInput, GameObject handtarget) : base(thisobject)
@@ -76,6 +77,7 @@ public class Player : Entity
     }
     public override void Update()
     {
+
         ThisInput.Update(ThisStamina, Mystate, CurrentHandTarget);
         TutorialScore = Timer.ElapsedTime;
 
@@ -113,12 +115,27 @@ public class Player : Entity
         {
             entry.Value.Update();
         }
-
+        if (CanHold)
+        {
+            ThisInventory.Update();
+        }
     }
-    
+    public IEnumerator PickUpCoroutine()
+    {
+        Animator ThisAnim = ThisObject.GetComponent<Animator>();
+
+        //CanHold = false;
+        ThisAnim.SetBool("IsPicking", true);
+        yield return new WaitForSeconds(2.3f);
+
+        ThisAnim.SetBool("IsPicking", false);
+        //CanHold = true;
+    }
+
     public bool AddItemToInventory(string pickupname) {
         if (Mystate.GetPickup())
         {
+            
             return this.ThisInventory.PickupItem(PickUp.AllItems[pickupname]);
         }
         return false;
@@ -175,16 +192,21 @@ public class Player : Entity
         DefaultHandTarget = newhand;
     }
 
-    private float X = 15;
-    private float Y = -90;
-    private float Z = -180;
+    private float X = 2;//15;
+    private float Y = -369;//-90;
+    private float Z = 3;//-180;
     int index = 0;
 
     List<float> Rotlist = new List<float>();
+    private float lerpSmoothingTime = 0.05f;
+    Quaternion OldRot = Quaternion.Euler(new Vector3(0, 0, 0.0f));
+    Quaternion NewRot = Quaternion.Euler(new Vector3(0, 0, 0.0f));
+    Vector3 OldPos = new Vector3(0,0,0);
     public void PutHandOut()
     {
-        if (ThisInventory.IsItemInHand())
+        if (CanHold && ThisInventory.IsItemInHand())
         {
+            
             if (Input.GetKeyDown(KeyCode.X))
             {
                 index = 0;
@@ -199,13 +221,13 @@ public class Player : Entity
                 index = 2;
             }
 
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Rotlist[index] += 1;
 
             }
 
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 Rotlist[index] -= 1;
                 Debug.Log("doing");
@@ -222,23 +244,33 @@ public class Player : Entity
             Y = Rotlist[1];
             Z = Rotlist[2];
             Animator ThisAnim = this.GetObject().GetComponent<Animator>();
-            Vector3 worldpos = new Vector3(2f, 3, 3);
+            Vector3 worldpos = new Vector3(X, Y, Z);
             float YTilt = (ThisInput.GetPitch() / 65) * 3;
             Vector2 mousePos = Input.mousePosition;
             worldpos.x += mousePos.x;
             worldpos.y += mousePos.y;
 
             Vector3 newVec = Camera.main.ScreenToWorldPoint(worldpos) + new Vector3(0, -YTilt,0);
-
-            ThisAnim.SetIKPosition(AvatarIKGoal.RightHand, newVec);
+            Vector3 NewPos = Vector3.Lerp(OldPos, newVec, Time.deltaTime/lerpSmoothingTime);
+            OldPos = newVec;
+            ThisAnim.SetIKPosition(AvatarIKGoal.RightHand, NewPos);
             ThisAnim.SetIKPositionWeight(AvatarIKGoal.RightHand, 0.42f);
 
-            Vector3 First = new Vector3(15, -90 + ThisInput.GetNewRot().y, -180 - ThisInput.GetNewRot().x);
-            Vector3 Second = this.GetRotationEuler();
 
-            ThisAnim.SetIKRotation(AvatarIKGoal.RightHand, Quaternion.Euler( First ));
+            Vector3 First = new Vector3(0, -90 + ThisInput.GetNewRot().y, -180 - ThisInput.GetNewRot().x);
+            
+            
+            NewRot = Quaternion.Euler(First);
+            Quaternion NewTemp = Quaternion.Lerp(OldRot, NewRot, Time.deltaTime/lerpSmoothingTime);
+            ThisAnim.SetIKRotation(AvatarIKGoal.RightHand, NewTemp);
+            OldRot = NewRot;
             ThisAnim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
         }
+    }
+
+    public void AddCoroutineToFire(IEnumerator CoRoutine)
+    {
+        this.CoroutinesToFire.Enqueue(CoRoutine);
     }
     public InputManager input;
 
@@ -258,4 +290,5 @@ public class Player : Entity
     private Stamina ThisStamina;
     private float SanityRegen = 0.75f;
     private float HealthDamage = 0.5f;
+    private bool CanHold = true;
 }
