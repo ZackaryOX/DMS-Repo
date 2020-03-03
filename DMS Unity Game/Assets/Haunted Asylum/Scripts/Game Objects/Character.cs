@@ -73,6 +73,16 @@ public class Character : MonoBehaviour
 
     void LateUpdate()
     {
+        if(ThisPlayer.CoroutinesToFire.Count > 0)
+        {
+            int Amount = ThisPlayer.CoroutinesToFire.Count;
+            for(int i = 0; i < Amount; i++)
+            {
+                IEnumerator Temp = ThisPlayer.CoroutinesToFire.Dequeue();
+                StartCoroutine(Temp);
+            }
+
+        }
         if (PV.IsMine)
         {
            

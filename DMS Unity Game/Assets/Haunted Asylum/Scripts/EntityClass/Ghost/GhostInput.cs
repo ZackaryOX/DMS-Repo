@@ -278,7 +278,17 @@ public class GhostInput
         CurrentSpeed = Vertical != 0 && Horizontal != 0 ? Speed / 2 : Speed;
 
 
-        CurrentSpeed = (Running > 0) && IsJumping == false ? CurrentSpeed * playerstam.DecreaseStam(Time.deltaTime) : CurrentSpeed;
+        float SpeedMod = (Running > 0) && IsJumping == false ? CurrentSpeed * playerstam.DecreaseStam(Time.deltaTime) : 0;
+
+        if (Running > 0 && SpeedMod > 0)
+        {
+            _animator.SetBool("IsRunning", true);
+            CurrentSpeed = SpeedMod;
+        }
+        else
+        {
+            _animator.SetBool("IsRunning", false);
+        }
 
         if (Running == 0 && !IsJumping)
             playerstam.IncreaseStam(Time.deltaTime, Mathf.Abs(Vertical) + Mathf.Abs(Horizontal));

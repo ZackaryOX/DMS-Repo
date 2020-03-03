@@ -134,7 +134,7 @@ public class GhostCharacter : MonoBehaviour
             input.Update();
             Sheet.SetActive(false);
             MyCamera.SetActive(true);
-            MyFBOCam.SetActive(true);
+            //MyFBOCam.SetActive(true);
             UIElements.SetActive(true);
             Vector2 Data = Player1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
@@ -220,7 +220,7 @@ public class GhostCharacter : MonoBehaviour
         input = new InputManager();
         hotbar = new GhostInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber);
         MyCamera.SetActive(false);
-        MyFBOCam.SetActive(false);
+        //MyFBOCam.SetActive(false);
         ThisPlayer = new Ghost(gameObject, head, hotbar, false, input);
         Player1Stats = new GhostStatObserver(ThisPlayer);
         Player1Score = new GhostScoreObserver(ThisPlayer);
