@@ -44,10 +44,11 @@ public class GhostmouseHover : MonoBehaviour
         }
 
 
-        if (Object == lookingAt)
+        if (Object == lookingAt && Vector3.Distance(Ghost.AllGhosts[0].GetObject().transform.position, lookingAt.transform.position) < 10)
         {
             mouseOver = true;
             Rend.material = NewMat;
+            Ghost.AllGhosts[0].CanInteract = true;
         }
         else
         {

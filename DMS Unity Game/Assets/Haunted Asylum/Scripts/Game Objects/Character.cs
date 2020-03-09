@@ -36,6 +36,8 @@ public class Character : MonoBehaviour
     public GameObject keybinds;
     public GameObject confirmation;
     public GameObject UIElements;
+    public GameObject interact;
+    public GameObject youlost;
 
 
     [FMODUnity.EventRef]
@@ -85,13 +87,21 @@ public class Character : MonoBehaviour
         }
         if (PV.IsMine)
         {
-           
+            Vector3 Data = Player1Stats.GetData();
+            
             if (!PlayedMusic)
             {
                 PlayedMusic = true;
                 ThisAudioManager.PlayMusic();
             }
-            if (input.GetKeyDown("escape"))
+            if (Data.x <= 0 && Time.time > 10)
+            {
+                ThisPlayer.SetState(PauseMenu);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                youlost.SetActive(true);
+            }
+            else if (input.GetKeyDown("escape"))
             {
                 if (OldState == null)
                 {
@@ -106,6 +116,12 @@ public class Character : MonoBehaviour
                     Resume();
                 }
             }
+            if (ThisPlayer.CanInteract)
+                interact.SetActive(true);
+            else
+                interact.SetActive(false);
+            ThisPlayer.CanInteract = false;
+
 
             ThisPlayer.Update();
             hotbar.Update();
@@ -113,18 +129,12 @@ public class Character : MonoBehaviour
             MyCamera.SetActive(true);
             //MyFBOCam.SetActive(true);
             UIElements.SetActive(true);
-            Vector3 Data = Player1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
-
-            if (Input.GetKey(KeyCode.O))
-                Data.z = 0;
-            if (Input.GetKey(KeyCode.P))
-                Data.x = 1;
 
             var tempColor = HealthBar.color;
             tempColor.a = (100 - Data.x) / 100;
             HealthBar.color = tempColor;
-            
+
             tempColor = SanityBar.color;
             tempColor.a = (100 - Data.z) / 100;
             SanityBar.color = tempColor;

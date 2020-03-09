@@ -273,10 +273,11 @@ public class Player : Entity
         this.CoroutinesToFire.Enqueue(CoRoutine);
     }
     public InputManager input;
+    public bool CanInteract = false;
 
     //Private
     private Dictionary<int, PlayerObserver> Observers = new Dictionary<int, PlayerObserver>();
-    private float Health;
+    public float Health = 100;
     private float Sanity;
     PlayerState Mystate;
     private GameObject DefaultHandTarget;

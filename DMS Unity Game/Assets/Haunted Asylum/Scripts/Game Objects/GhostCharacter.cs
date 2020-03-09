@@ -37,6 +37,8 @@ public class GhostCharacter : MonoBehaviour
     public GameObject keybinds;
     public GameObject confirmation;
     public GameObject UIElements;
+    public GameObject interact;
+    public GameObject youwon;
     private bool DoorsDeleted = false;
 
     public Materialise TestAbility;
@@ -110,6 +112,13 @@ public class GhostCharacter : MonoBehaviour
                     Debug.Log("deleting door colliders");
                 }
             }
+            if (Player.AllPlayers[0].GetHealth() <=0 && Time.time > 10)
+            {
+                ThisPlayer.SetState(PauseMenu);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                youwon.SetActive(true);
+            }
             if (input.GetKeyDown("escape"))
             {
                 if (OldState == null)
@@ -125,6 +134,12 @@ public class GhostCharacter : MonoBehaviour
                     Resume();
                 }
             }
+            if (ThisPlayer.CanInteract)
+                interact.SetActive(true);
+            else
+                interact.SetActive(false);
+            ThisPlayer.CanInteract = false;
+
             if (Input.GetKeyDown(KeyCode.N))
             {
                 TestAbility.Activate();

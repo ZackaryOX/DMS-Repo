@@ -130,6 +130,7 @@ public class Ghost : Entity
     {
         return ThisInput.GetDefaultSpeed();
     }
+    public bool CanInteract = false;
     //Private
     private Dictionary<int, GhostObserver> Observers = new Dictionary<int, GhostObserver>();
     private List<SkinnedMeshRenderer> MyRenderers = new List<SkinnedMeshRenderer>();
