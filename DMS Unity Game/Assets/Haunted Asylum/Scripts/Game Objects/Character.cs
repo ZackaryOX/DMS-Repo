@@ -94,7 +94,7 @@ public class Character : MonoBehaviour
                 PlayedMusic = true;
                 ThisAudioManager.PlayMusic();
             }
-            if (Data.x <= 0 && Time.time > 10)
+            if (Data.x <= 0 && Time.time > 20)
             {
                 ThisPlayer.SetState(PauseMenu);
                 Cursor.lockState = CursorLockMode.None;

@@ -112,7 +112,7 @@ public class GhostCharacter : MonoBehaviour
                     Debug.Log("deleting door colliders");
                 }
             }
-            if (Player.AllPlayers[0].GetHealth() <=0 && Time.time > 10)
+            if (Player.AllPlayers[0].GetHealth() <=0 && Time.time > 20)
             {
                 ThisPlayer.SetState(PauseMenu);
                 Cursor.lockState = CursorLockMode.None;
