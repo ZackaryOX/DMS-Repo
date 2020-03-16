@@ -38,7 +38,7 @@ public class Player : Entity
 
     ~Player()
     {
-        if(Added)
+        if (Added)
         {
             AllPlayers.Remove(PlayerNumber);
         }
@@ -77,22 +77,23 @@ public class Player : Entity
     }
     public override void Update()
     {
-
-        ThisInput.Update(ThisStamina, Mystate, CurrentHandTarget);
-        TutorialScore = Timer.ElapsedTime;
-
-        if(GetSanity() < 100)
+        if (!IsClone)
+        {
+            ThisInput.Update(ThisStamina, Mystate, CurrentHandTarget);
+            TutorialScore = Timer.ElapsedTime;
+        }
+        if (GetSanity() < 100)
         {
             Sanity += SanityRegen * Time.deltaTime;
-            if(Sanity > 100.0f)
+            if (Sanity > 100.0f)
             {
                 Sanity = 100;
             }
 
-            if(Health > 0.0f)
+            if (Health > 0.0f)
             {
                 float Multiplier = 0;
-                if(Sanity < 75)
+                if (Sanity < 75)
                 {
                     Multiplier = 1;
                 }
@@ -100,7 +101,7 @@ public class Player : Entity
                 {
                     Multiplier = 2;
                 }
-                if(Sanity < 25)
+                if (Sanity < 25)
                 {
                     Multiplier = 3;
                 }
@@ -111,7 +112,7 @@ public class Player : Entity
             GetObject().GetComponent<PhotonView>().RPC("UpdatePlayer", RpcTarget.OthersBuffered, GetSanity(), GetHealth());
         }
 
-        foreach(KeyValuePair<int, PlayerObserver> entry in Observers)
+        foreach (KeyValuePair<int, PlayerObserver> entry in Observers)
         {
             entry.Value.Update();
         }
@@ -132,10 +133,11 @@ public class Player : Entity
         //CanHold = true;
     }
 
-    public bool AddItemToInventory(string pickupname) {
+    public bool AddItemToInventory(string pickupname)
+    {
         if (Mystate.GetPickup())
         {
-            
+
             return this.ThisInventory.PickupItem(PickUp.AllItems[pickupname]);
         }
         return false;
@@ -192,6 +194,15 @@ public class Player : Entity
         DefaultHandTarget = newhand;
     }
 
+    public bool GetIsClone()
+    {
+        return IsClone;
+    }
+    public void SetIsClone(bool temp)
+    {
+        IsClone = temp;
+    }
+
     private float X = 2;//15;
     private float Y = -369;//-90;
     private float Z = 3;//-180;
@@ -201,16 +212,16 @@ public class Player : Entity
     private float lerpSmoothingTime = 0.05f;
     Quaternion OldRot = Quaternion.Euler(new Vector3(0, 0, 0.0f));
     Quaternion NewRot = Quaternion.Euler(new Vector3(0, 0, 0.0f));
-    Vector3 OldPos = new Vector3(0,0,0);
+    Vector3 OldPos = new Vector3(0, 0, 0);
     public void PutHandOut()
     {
         if (CanHold && ThisInventory.IsItemInHand())
         {
-            
+
             if (Input.GetKeyDown(KeyCode.X))
             {
                 index = 0;
-                
+
             }
             else if (Input.GetKeyDown(KeyCode.Y))
             {
@@ -237,9 +248,9 @@ public class Player : Entity
             if (Input.GetKeyDown(KeyCode.P))
             {
                 Debug.Log("X: " + X + " Y: " + Y + " Z: " + Z);
-                
+
             }
-            
+
             X = Rotlist[0];
             Y = Rotlist[1];
             Z = Rotlist[2];
@@ -250,18 +261,18 @@ public class Player : Entity
             worldpos.x += mousePos.x;
             worldpos.y += mousePos.y;
 
-            Vector3 newVec = Camera.main.ScreenToWorldPoint(worldpos) + new Vector3(0, -YTilt,0);
-            Vector3 NewPos = Vector3.Lerp(OldPos, newVec, Time.deltaTime/lerpSmoothingTime);
+            Vector3 newVec = Camera.main.ScreenToWorldPoint(worldpos) + new Vector3(0, -YTilt, 0);
+            Vector3 NewPos = Vector3.Lerp(OldPos, newVec, Time.deltaTime / lerpSmoothingTime);
             OldPos = newVec;
             ThisAnim.SetIKPosition(AvatarIKGoal.RightHand, NewPos);
             ThisAnim.SetIKPositionWeight(AvatarIKGoal.RightHand, 0.42f);
 
 
             Vector3 First = new Vector3(0, -90 + ThisInput.GetNewRot().y, -180 - ThisInput.GetNewRot().x);
-            
-            
+
+
             NewRot = Quaternion.Euler(First);
-            Quaternion NewTemp = Quaternion.Lerp(OldRot, NewRot, Time.deltaTime/lerpSmoothingTime);
+            Quaternion NewTemp = Quaternion.Lerp(OldRot, NewRot, Time.deltaTime / lerpSmoothingTime);
             ThisAnim.SetIKRotation(AvatarIKGoal.RightHand, NewTemp);
             OldRot = NewRot;
             ThisAnim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
@@ -291,4 +302,5 @@ public class Player : Entity
     private float SanityRegen = 0.75f;
     private float HealthDamage = 0.5f;
     private bool CanHold = true;
+    private bool IsClone = false;
 }

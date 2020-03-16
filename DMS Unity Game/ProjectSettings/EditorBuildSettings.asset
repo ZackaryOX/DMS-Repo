@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Haunted Asylum/Scenes/Lobby.unity
     guid: 670e021b83f26404cbf18156538d4752
   - enabled: 1

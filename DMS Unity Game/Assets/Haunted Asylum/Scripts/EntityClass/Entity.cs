@@ -43,6 +43,12 @@ public class Entity
     {
         return ThisObject;
     }
+
+    public int GetNetworkID()
+    {
+        return NetworkID;
+    }
+
     public void SetPosition(Vector3 temp)
     {
         this.Trans.position = temp;
@@ -59,6 +65,10 @@ public class Entity
     {
         ThisObject.SetActive(temp);
     }
+    public void SetNetworkID(int temp)
+    {
+        NetworkID = temp;
+    }
 
     public virtual void Update()
     {
@@ -72,5 +82,6 @@ public class Entity
     protected int ID = 0;
     protected Transform Trans;
     protected string Name;
+    protected int NetworkID;
 
 }

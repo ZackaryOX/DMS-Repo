@@ -6,11 +6,12 @@ using UnityEngine;
 public class ForDoor : MonoBehaviour
 {
     // Start is called before the first frame update
-   public Door ThisDoor;
+    public Door ThisDoor;
     public GameObject Keyobject;
-    PhotonView DoorView;
     private PickUp ThisKey;
     public bool locked;
+    NetworkWrapper ThisWrapper;
+
 
     [FMODUnity.EventRef]
     public string musicEventName = "";
@@ -33,11 +34,12 @@ public class ForDoor : MonoBehaviour
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(musiceventinstance, GetComponent<Transform>(), GetComponent<Rigidbody>());
 
 
-        if(locked == true)
-        ThisKey = PickUp.AllItems[Keyobject.name];
-        
+        if (locked == true)
+            ThisKey = PickUp.AllItems[Keyobject.name];
+
         ThisDoor.SetKey(ThisKey);
-        DoorView = GetComponent<PhotonView>();
+
+        ThisWrapper = GameObject.Find("NetworkManager").GetComponent<NetworkWrapper>();
     }
 
     // Update is called once per frame
@@ -45,28 +47,31 @@ public class ForDoor : MonoBehaviour
     {
         if (GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.E))
         {
-            DoorView.RPC("DoorInteract", RpcTarget.AllBuffered, null);
-            //ThisDoor.Interact();
+            DoorInteract();
 
-            
+
         }
         else if (locked && ThisKey.GetPicked() == true && GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (Player.AllPlayers[0].UseItemInInventory(ThisKey))
             {
-                DoorView.RPC("DoorUnlock", RpcTarget.AllBuffered, null);
+                DoorUnlock();
             }
-                
+
         }
         ThisDoor.Update();
     }
 
 
-    [PunRPC]
     void DoorInteract()
     {
         if (ThisDoor.GetIsLocked() == false && ThisDoor.IsSlerping == false)
         {
+            //string Msg = "UPDRAWER";
+            //Msg += "\n";
+            ////Msg += this.NetworkID;
+            //ThisWrapper.SendServerMessage(Msg);
+
             ThisDoor.Interact();
             if (ThisDoor.GetIsOpened() == false)
             {
@@ -80,10 +85,9 @@ public class ForDoor : MonoBehaviour
             musiceventinstance.setParameterByName("State", CurrentState);
             musiceventinstance.start();
         }
-        
+
     }
 
-    [PunRPC]
     void DoorUnlock()
     {
         ThisDoor.UnlockDoor();

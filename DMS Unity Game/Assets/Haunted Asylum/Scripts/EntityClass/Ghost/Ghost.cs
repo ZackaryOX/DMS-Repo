@@ -7,7 +7,7 @@ public class Ghost : Entity
     public static Dictionary<int, Ghost> AllGhosts = new Dictionary<int, Ghost>();
     static int Ghosts = 0;
     //Constructor
-    public Ghost(GameObject thisobject, GameObject temphead, GhostInventory tempinv, bool isEditor,InputManager tempInput) : base(thisobject)
+    public Ghost(GameObject thisobject, GameObject temphead, GhostInventory tempinv, bool isEditor, InputManager tempInput) : base(thisobject)
     {
         Head = temphead;
 
@@ -40,7 +40,7 @@ public class Ghost : Entity
     {
         return this.ThisStamina.GetStamina();
     }
-    
+
     public float GetScore()
     {
         return TutorialScore;
@@ -48,9 +48,11 @@ public class Ghost : Entity
 
     public override void Update()
     {
-        ThisInput.Update(ThisStamina, Mystate);
-        TutorialScore = Timer.ElapsedTime;
-
+        if (!IsClone)
+        {
+            ThisInput.Update(ThisStamina, Mystate);
+            TutorialScore = Timer.ElapsedTime;
+        }
 
         foreach (KeyValuePair<int, GhostObserver> entry in Observers)
         {
@@ -130,6 +132,16 @@ public class Ghost : Entity
     {
         return ThisInput.GetDefaultSpeed();
     }
+    public bool GetIsClone()
+    {
+        return IsClone;
+    }
+    public void SetIsClone(bool temp)
+    {
+        IsClone = temp;
+    }
+
+
     //Private
     private Dictionary<int, GhostObserver> Observers = new Dictionary<int, GhostObserver>();
     private List<SkinnedMeshRenderer> MyRenderers = new List<SkinnedMeshRenderer>();
@@ -142,4 +154,5 @@ public class Ghost : Entity
     private bool Added = false;
     private GameObject Head;
     private Stamina ThisStamina;
+    private bool IsClone = false;
 }

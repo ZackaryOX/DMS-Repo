@@ -7,22 +7,47 @@ public class EnemyFollow : MonoBehaviour
 {
     Transform target;
     NavMeshAgent agent;
+    private Animator animator;
+    public bool Setup = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        target = Player.AllPlayers[0].GetObject().transform;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        agent.SetDestination(target.position);
+        if (!Setup)
+        {
+            if (Player.AllPlayers.Count > 0)
+            {
+                agent = GetComponent<NavMeshAgent>();
+                target = Player.AllPlayers[0].GetObject().transform;
+                animator = this.GetComponent<Animator>();
+                Setup = true;
+            }
+        }
+        else if (Setup)
+        {
+            if (agent.velocity.magnitude < 0.5f)
+                animator.SetBool("IsWalking", false);
+            else if (agent.velocity.magnitude < 5)
+            {
+                animator.SetBool("IsRunning", false);
+                animator.SetBool("IsWalking", true);
+            }
+            else
+            {
+                animator.SetBool("IsRunning", true);
+            }
 
-        float distance = Vector3.Distance(target.position, transform.position);
+            agent.SetDestination(target.position);
+
+            float distance = Vector3.Distance(target.position, transform.position);
             Vector3 direction = (target.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f);
+            transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        }
     }
 }

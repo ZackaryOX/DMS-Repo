@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class GhostCharacter : MonoBehaviour
 {
     Ghost ThisPlayer;
-    private PhotonView PV;
     public GameObject head;
     public GameObject MyCamera;
     public GameObject MyFBOCam;
@@ -25,6 +24,7 @@ public class GhostCharacter : MonoBehaviour
     GhostScoreObserver Player1Score;
 
     public Sprite CrawlerIcon;
+    public bool IsClone = false;
 
     private InputManager input;
     private PausedState PauseMenu;
@@ -55,7 +55,6 @@ public class GhostCharacter : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 144;
         PauseMenu = new PausedState();
-        PV = GetComponent<PhotonView>();
         UIElements.SetActive(false);
         PlayerAwake();
 
@@ -68,7 +67,7 @@ public class GhostCharacter : MonoBehaviour
         ThisPlayer.AddRenderer(Sheet.GetComponent<SkinnedMeshRenderer>());
         ThisPlayer.SetTransparency(0.2f);
 
-       
+
     }
     private void Start()
     {
@@ -82,8 +81,8 @@ public class GhostCharacter : MonoBehaviour
 
     void LateUpdate()
     {
-        
-        if(Player.AllPlayers.Count == 0)
+        ThisPlayer.SetIsClone(IsClone);
+        if (Player.AllPlayers.Count == 0)
         {
             Debug.Log("waiting for players");
         }
@@ -98,13 +97,13 @@ public class GhostCharacter : MonoBehaviour
             TestAbility = new Materialise(ThisPlayer, Player.AllPlayers[0], Cooldown, ActiveTime, AOERadius, AOEDamage, LookDamage);
             Debug.Log("setting ability");
         }
-        else if (PV.IsMine)
+        else if (!IsClone)
         {
             if (!DoorsDeleted && Door.AllDoors.Count > 0)
             {
                 DoorsDeleted = true;
 
-                foreach (KeyValuePair<string, Door> entry in Door.AllDoors )
+                foreach (KeyValuePair<string, Door> entry in Door.AllDoors)
                 {
                     Destroy(entry.Value.GetObject().GetComponent<MeshCollider>());
                     Debug.Log("deleting door colliders");
@@ -139,8 +138,13 @@ public class GhostCharacter : MonoBehaviour
             Vector2 Data = Player1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
             HealthBar.transform.localScale = new Vector3(Data.x / 100, 1, 1);
-            TestAbility.Update(PV);
+            //TestAbility.Update(PV); NEED TO FIX - NETWORKING
 
+        }
+        else if (IsClone)
+        {
+            ThisPlayer.Update();
+            MyCamera.SetActive(false);
         }
 
     }
@@ -212,7 +216,10 @@ public class GhostCharacter : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-
+    public Ghost GetGhostObj()
+    {
+        return ThisPlayer;
+    }
 
     [PunRPC]
     void PlayerAwake()
@@ -225,7 +232,8 @@ public class GhostCharacter : MonoBehaviour
         Player1Stats = new GhostStatObserver(ThisPlayer);
         Player1Score = new GhostScoreObserver(ThisPlayer);
         /*FOR TUTORIAL:*///ThisPlayer.SetState(new TeachWalkState());
-        /*FOR EDITING:*/ThisPlayer.SetState(new TeachPickupState());
+        /*FOR EDITING:*/
+        ThisPlayer.SetState(new TeachPickupState());
 
         CrawlerTrap crawlertemp = new CrawlerTrap();
         hotbar.AddTrap(crawlertemp, CrawlerIcon);
@@ -246,7 +254,7 @@ public class GhostCharacter : MonoBehaviour
     [PunRPC]
     public void SetTargetSanity(float newSanity)
     {
-         Player.AllPlayers[0].SetSanity(newSanity);
+        Player.AllPlayers[0].SetSanity(newSanity);
     }
 
     [PunRPC]

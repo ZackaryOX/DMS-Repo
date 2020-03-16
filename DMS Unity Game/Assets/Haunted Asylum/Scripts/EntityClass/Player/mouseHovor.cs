@@ -45,10 +45,11 @@ public class mouseHovor : MonoBehaviour
 
         if (lookingAt)
         {
-            if (Object.name == lookingAt.name)
+            if (Object.name == lookingAt.name && Vector3.Distance(Player.AllPlayers[0].GetObject().transform.position,lookingAt.transform.position) < 10)
             {
                 mouseOver = true;
                 Rend.material = NewMat;
+                //Player.AllPlayers[0].CanInteract = true;
             }
             else
             {

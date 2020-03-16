@@ -6,14 +6,23 @@ public class Drawer : Interactable
 {
     public static Dictionary<string, Drawer> AllDrawers = new Dictionary<string, Drawer>();
 
-    public Drawer(GameObject Cabinet, GameObject drawer) : base(Cabinet)
+    public Drawer(GameObject Cabinet, GameObject drawer, int NetID) : base(Cabinet)
     {
         ThisDrawer = drawer;
         ClosePosition = drawer.transform.position;
         OpenPosition = ClosePosition + new Vector3(3, 0, 0);
-        DrawerName = "Drawer" + ID;
-        this.ThisObject.transform.parent.name = DrawerName;
+        this.SetNetworkID(NetID);
+
+        DrawerName = "Drawer" + NetworkID;
+        if (AllDrawers.ContainsKey(DrawerName))
+        {
+            Debug.Log(DrawerName + " EXISTS MORE THAN ONCE");
+            DrawerName = "Drawer" + ID;
+            Debug.Log(DrawerName + " RENAMED DUE TO DOUBLE EXISTENCE");
+        }
+        this.ThisDrawer.transform.name = DrawerName;
         AllDrawers.Add(DrawerName, this);
+
     }
 
 
@@ -31,7 +40,7 @@ public class Drawer : Interactable
         {
             IsLerping = true;
         }
-        
+
     }
 
     public override void Update()

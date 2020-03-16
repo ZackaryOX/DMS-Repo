@@ -23,6 +23,8 @@ public class Character : MonoBehaviour
     StatObserver Player1Stats;
     ScoreObserver Player1Score;
 
+    public bool IsClone = false;
+
     private InputManager input;
     private PausedState PauseMenu;
     private PlayerState OldState;
@@ -52,40 +54,38 @@ public class Character : MonoBehaviour
         PV = GetComponent<PhotonView>();
         UIElements.SetActive(false);
         PlayerAwake();
-        //PV.RPC("PlayerAwake", RpcTarget.AllBuffered);
         ThisAudioManager = new AudioManager(SFXEventNames, MusicEventNames, head);
         Debug.Log("CHARACTER CREATED");
     }
 
     void Update()
     {
-               
+
     }
 
     void OnAnimatorIK()
     {
-        if (PV.IsMine)
-        {
-            ThisPlayer.PutHandOut();
-        }
+
+        ThisPlayer.PutHandOut();
     }
 
 
     void LateUpdate()
     {
-        if(ThisPlayer.CoroutinesToFire.Count > 0)
+        ThisPlayer.SetIsClone(IsClone);
+        if (!IsClone)
         {
-            int Amount = ThisPlayer.CoroutinesToFire.Count;
-            for(int i = 0; i < Amount; i++)
+            if (ThisPlayer.CoroutinesToFire.Count > 0)
             {
-                IEnumerator Temp = ThisPlayer.CoroutinesToFire.Dequeue();
-                StartCoroutine(Temp);
+                int Amount = ThisPlayer.CoroutinesToFire.Count;
+                for (int i = 0; i < Amount; i++)
+                {
+                    IEnumerator Temp = ThisPlayer.CoroutinesToFire.Dequeue();
+                    StartCoroutine(Temp);
+                }
+
             }
 
-        }
-        if (PV.IsMine)
-        {
-           
             if (!PlayedMusic)
             {
                 PlayedMusic = true;
@@ -124,14 +124,19 @@ public class Character : MonoBehaviour
             var tempColor = HealthBar.color;
             tempColor.a = (100 - Data.x) / 100;
             HealthBar.color = tempColor;
-            
+
             tempColor = SanityBar.color;
             tempColor.a = (100 - Data.z) / 100;
             SanityBar.color = tempColor;
 
             ThisAudioManager.Update(Data.z);
+
         }
-        
+        else if (IsClone)
+        {
+            ThisPlayer.Update();
+            MyCamera.SetActive(false);
+        }
     }
 
     public void SetSFXVolume(float temp)
@@ -200,8 +205,10 @@ public class Character : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
-
-
+    public Player GetPlayerObj()
+    {
+        return ThisPlayer;
+    }
 
     [PunRPC]
     void PlayerAwake()
@@ -213,8 +220,9 @@ public class Character : MonoBehaviour
         ThisPlayer = new Player(gameObject, head, hotbar, false, input, HandTarget);
         Player1Stats = new StatObserver(ThisPlayer);
         Player1Score = new ScoreObserver(ThisPlayer);
-       /*FOR TUTORIAL:*/ //Player1.SetState(new TeachWalkState());
-       /*FOR EDITING:*/  ThisPlayer.SetState(new TeachPickupState());
+        /*FOR TUTORIAL:*/ //Player1.SetState(new TeachWalkState());
+        /*FOR EDITING:*/
+        ThisPlayer.SetState(new TeachPickupState());
     }
     [PunRPC]
     void UpdatePlayer(float Sanity, float health)
