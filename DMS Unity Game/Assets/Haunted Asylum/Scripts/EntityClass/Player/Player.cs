@@ -109,7 +109,10 @@ public class Player : Entity
                 Health -= Multiplier * HealthDamage * Time.deltaTime;
             }
 
-            GetObject().GetComponent<PhotonView>().RPC("UpdatePlayer", RpcTarget.OthersBuffered, GetSanity(), GetHealth());
+            //GetObject().GetComponent<PhotonView>().RPC("UpdatePlayer", RpcTarget.OthersBuffered, GetSanity(), GetHealth()); - FIX
+            SetSanity(GetSanity());
+            SetHealth(GetHealth());
+            //Debug.Log(GetSanity());
         }
 
         foreach (KeyValuePair<int, PlayerObserver> entry in Observers)

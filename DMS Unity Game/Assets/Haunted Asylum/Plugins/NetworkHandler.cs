@@ -8,7 +8,8 @@ public class NetworkHandler : MonoBehaviour
     private bool StartUp = false;
     private bool NameAssigned = false;
     private bool Updating = false;
-    public float WaitTime = 0.2f;
+    public static float WaitTime = 0.1f;
+    public float ElapsedTime = 0;
 
 
     public GameObject PlayerContainer;
@@ -35,13 +36,31 @@ public class NetworkHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ElapsedTime += Time.deltaTime;
+
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            WaitTime -= 0.1f;
+            if (ThisWrapper.Name == "PLAYER" && WaitTime > 0.1f)
+            {
+                WaitTime -= 0.05f;
+
+                string Msg = "UPDT";
+                Msg += "\n";
+                Msg += WaitTime.ToString();
+                ThisWrapper.SendServerMessage(Msg);
+            }
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            WaitTime += 0.1f;
+            if (ThisWrapper.Name == "PLAYER")
+            {
+                WaitTime += 0.1f;
+
+                string Msg = "UPDT";
+                Msg += "\n";
+                Msg += WaitTime.ToString();
+                ThisWrapper.SendServerMessage(Msg);
+            }
         }
         if (ThisWrapper.ClientRunning && !NameAssigned)
         {
@@ -60,7 +79,11 @@ public class NetworkHandler : MonoBehaviour
                 GhostModel.AddComponent<NetworkedPlayer>();
                 ClientToReplicate = GhostModel.GetComponent<NetworkedPlayer>();
                 GhostModel.GetComponent<GhostCharacter>().IsClone = true;
-
+                
+                
+                
+                PrevPos = Avatar.transform.position;
+                PrevRot = Avatar.transform.eulerAngles;
 
                 NameAssigned = true;
             }
@@ -81,6 +104,10 @@ public class NetworkHandler : MonoBehaviour
                 ClientToReplicate = PlayerModel.GetComponent<NetworkedPlayer>();
                 PlayerModel.GetComponent<Character>().IsClone = true;
 
+
+
+                PrevPos = Avatar.transform.position;
+                PrevRot = Avatar.transform.eulerAngles;
                 NameAssigned = true;
             }
         }
@@ -108,6 +135,7 @@ public class NetworkHandler : MonoBehaviour
             {
                 UpdateNetGhost();
             }
+            //Debug.Log(ElapsedTime);
             yield return new WaitForSeconds(WaitTime);
         }
     }
@@ -168,6 +196,16 @@ public class NetworkHandler : MonoBehaviour
                 string Index = "Drawer" + NetID;
                 GameObject.Find(Index).GetComponent<ForDrawer>().DrawerInteract();
             }
+            else if(Type == "UPDT")
+            {
+                float TimeToSetTo = float.Parse(strRdr.ReadLine());
+                WaitTime = TimeToSetTo;
+                Debug.Log("Setting time to: " + TimeToSetTo);
+            }
+            else if (Type == "ACTT1")
+            {
+                GhostModel.GetComponent<GhostCharacter>().ActivateMaterialiseAbility();
+            }
             else if (Type == "CS")
             {
                 Debug.Log("CS ACTIVATED");
@@ -183,6 +221,7 @@ public class NetworkHandler : MonoBehaviour
     }
     void UpdateNetPlayer()
     {
+
         Vector3 NewPos = PlayerModel.transform.position;
         Vector3 NewRot = PlayerModel.transform.eulerAngles;
 
@@ -212,11 +251,13 @@ public class NetworkHandler : MonoBehaviour
             Msg += "\n";
             Msg += running.ToString();
             ThisWrapper.SendServerMessage(Msg);
+
         }
     }
 
     void UpdateNetGhost()
     {
+
         Vector3 NewPos = GhostModel.transform.position;
         Vector3 NewRot = GhostModel.transform.eulerAngles;
 

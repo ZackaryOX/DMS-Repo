@@ -9,9 +9,9 @@ public class CrawlerTrapNode : TrapNode
     public GameObject EndPos;
     public GameObject Prefab;
     private GhostmouseHover MyMouse;
+    private bool TrapOver = false;
     public int LerpTime;
     CrawlerTrap Slot;
-    PhotonView MyView;
 
     [FMODUnity.EventRef]
     public string DamageEvent = "";
@@ -20,7 +20,6 @@ public class CrawlerTrapNode : TrapNode
     void Start()
     {
         MyMouse = GetComponent<GhostmouseHover>();
-        MyView = GetComponent<PhotonView>();
         Slot = new CrawlerTrap(Prefab, StartPos, EndPos);
 
 
@@ -38,12 +37,10 @@ public class CrawlerTrapNode : TrapNode
         if (Player.AllPlayers.Count > 0 &&  Ghost.AllGhosts.Count > 0)
         {
 
-            if (Ghost.AllGhosts[0].GetTrap() != null && Ghost.AllGhosts[0].GetTrap().type == TrapType.CRAWLER && MyMouse.mouseOver && Input.GetKeyDown(KeyCode.E))
-            {
 
-                isActive = true;
 
-            }
+            isActive = true;
+
                 
         }
 
@@ -74,9 +71,9 @@ public class CrawlerTrapNode : TrapNode
             }
             
         }
-        if (Slot != null)
+        if (Slot != null && !TrapOver)
         {
-            Slot.Update(MyView);
+            TrapOver = Slot.Update();
         }
     }
 

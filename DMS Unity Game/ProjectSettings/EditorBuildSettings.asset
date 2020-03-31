@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Haunted Asylum/Scenes/HauntedAsylum.unity
     guid: 2a422de1a082e4d44b5dd86a189be571
+  - enabled: 0
+    path: Assets/Scenes/NetworkingAssignment.unity
+    guid: dd5d7879c1b033844aaed609306f7e98
   m_configObjects: {}

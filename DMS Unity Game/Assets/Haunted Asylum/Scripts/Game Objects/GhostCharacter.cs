@@ -38,6 +38,7 @@ public class GhostCharacter : MonoBehaviour
     public GameObject confirmation;
     public GameObject UIElements;
     private bool DoorsDeleted = false;
+    private NetworkWrapper ThisWrapper;
 
     public Materialise TestAbility;
 
@@ -73,6 +74,7 @@ public class GhostCharacter : MonoBehaviour
     {
         AbilityInstance = FMODUnity.RuntimeManager.CreateInstance(AbilityAudio);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(AbilityInstance, head.GetComponent<Transform>(), head.GetComponent<Rigidbody>());
+        ThisWrapper = GameObject.Find("NetworkManager").GetComponent<NetworkWrapper>();
     }
     void Update()
     {
@@ -94,7 +96,7 @@ public class GhostCharacter : MonoBehaviour
             float Cooldown = 10.0f;
             float ActiveTime = 5.0f;
 
-            TestAbility = new Materialise(ThisPlayer, Player.AllPlayers[0], Cooldown, ActiveTime, AOERadius, AOEDamage, LookDamage);
+            TestAbility = new Materialise(ThisPlayer, Player.AllPlayers[0], Cooldown, ActiveTime, AOERadius, AOEDamage, LookDamage, AbilityInstance);
             Debug.Log("setting ability");
         }
         else if (!IsClone)
@@ -126,7 +128,9 @@ public class GhostCharacter : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
-                TestAbility.Activate();
+                string Msg = "ACTT1";
+                ThisWrapper.SendServerMessage(Msg);
+                //TestAbility.Activate();
             }
             ThisPlayer.Update();
             hotbar.Update();
@@ -138,13 +142,14 @@ public class GhostCharacter : MonoBehaviour
             Vector2 Data = Player1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
             HealthBar.transform.localScale = new Vector3(Data.x / 100, 1, 1);
-            //TestAbility.Update(PV); NEED TO FIX - NETWORKING
+            TestAbility.Update();
 
         }
         else if (IsClone)
         {
             ThisPlayer.Update();
             MyCamera.SetActive(false);
+            TestAbility.Update();
         }
 
     }
@@ -160,6 +165,10 @@ public class GhostCharacter : MonoBehaviour
     public void SetMasterVolume(float temp)
     {
         ThisAudioManager.SetMasterVolume(temp);
+    }
+    public void ActivateMaterialiseAbility()
+    {
+        TestAbility.Activate();
     }
     public void StoreText(Text KeyText)
     {

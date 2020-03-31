@@ -24,6 +24,7 @@ ScriptsOnlyBuild:
     - PluginTesterScript
     - QuestManager
     - SetColliders
+    - Timer
     - Waypoint
     - mouseHovor
     - rayFromCamera
@@ -162,171 +163,173 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11528}
-    - Class: 114
-      Script: {instanceID: 11586}
+      Script: {instanceID: 11544}
     - Class: 114
       Script: {instanceID: 11602}
     - Class: 114
-      Script: {instanceID: 11638}
+      Script: {instanceID: 11618}
     - Class: 114
-      Script: {instanceID: 11724}
+      Script: {instanceID: 11654}
     - Class: 114
-      Script: {instanceID: 11882}
+      Script: {instanceID: 11740}
     - Class: 114
-      Script: {instanceID: 11922}
+      Script: {instanceID: 11898}
     - Class: 114
-      Script: {instanceID: 11934}
+      Script: {instanceID: 11938}
     - Class: 114
-      Script: {instanceID: 11974}
+      Script: {instanceID: 11950}
     - Class: 114
-      Script: {instanceID: 12062}
+      Script: {instanceID: 11990}
     - Class: 114
-      Script: {instanceID: 12066}
+      Script: {instanceID: 12078}
     - Class: 114
-      Script: {instanceID: 12168}
+      Script: {instanceID: 12082}
     - Class: 114
-      Script: {instanceID: 12236}
+      Script: {instanceID: 12184}
     - Class: 114
-      Script: {instanceID: 12260}
+      Script: {instanceID: 12252}
     - Class: 114
-      Script: {instanceID: 12440}
+      Script: {instanceID: 12276}
     - Class: 114
-      Script: {instanceID: 12504}
+      Script: {instanceID: 12456}
     - Class: 114
-      Script: {instanceID: 12574}
+      Script: {instanceID: 12520}
     - Class: 114
-      Script: {instanceID: 12870}
+      Script: {instanceID: 12590}
     - Class: 114
-      Script: {instanceID: 13026}
+      Script: {instanceID: 12886}
     - Class: 114
-      Script: {instanceID: 13050}
+      Script: {instanceID: 12966}
     - Class: 114
-      Script: {instanceID: 13054}
+      Script: {instanceID: 13036}
     - Class: 114
-      Script: {instanceID: 13128}
+      Script: {instanceID: 13048}
     - Class: 114
-      Script: {instanceID: 13130}
+      Script: {instanceID: 13072}
     - Class: 114
-      Script: {instanceID: 13328}
+      Script: {instanceID: 13076}
     - Class: 114
-      Script: {instanceID: 13400}
+      Script: {instanceID: 13150}
     - Class: 114
-      Script: {instanceID: 13488}
+      Script: {instanceID: 13152}
     - Class: 114
-      Script: {instanceID: 13494}
+      Script: {instanceID: 13350}
     - Class: 114
-      Script: {instanceID: 13744}
+      Script: {instanceID: 13422}
     - Class: 114
-      Script: {instanceID: 13782}
+      Script: {instanceID: 13510}
     - Class: 114
-      Script: {instanceID: 13846}
+      Script: {instanceID: 13516}
     - Class: 114
-      Script: {instanceID: 13934}
+      Script: {instanceID: 13766}
     - Class: 114
-      Script: {instanceID: 14064}
+      Script: {instanceID: 13804}
     - Class: 114
-      Script: {instanceID: 14080}
+      Script: {instanceID: 13868}
     - Class: 114
-      Script: {instanceID: 14124}
+      Script: {instanceID: 13956}
     - Class: 114
-      Script: {instanceID: 14232}
+      Script: {instanceID: 14086}
     - Class: 114
-      Script: {instanceID: 14470}
+      Script: {instanceID: 14102}
     - Class: 114
-      Script: {instanceID: 14510}
+      Script: {instanceID: 14146}
     - Class: 114
-      Script: {instanceID: 14542}
+      Script: {instanceID: 14254}
     - Class: 114
-      Script: {instanceID: 14574}
+      Script: {instanceID: 14492}
+    - Class: 114
+      Script: {instanceID: 14532}
+    - Class: 114
+      Script: {instanceID: 14560}
     - Class: 114
       Script: {instanceID: 14592}
     - Class: 114
-      Script: {instanceID: 14620}
+      Script: {instanceID: 14612}
     - Class: 114
-      Script: {instanceID: 14756}
+      Script: {instanceID: 14640}
     - Class: 114
-      Script: {instanceID: 14982}
+      Script: {instanceID: 14776}
     - Class: 114
-      Script: {instanceID: 14992}
+      Script: {instanceID: 15002}
     - Class: 114
-      Script: {instanceID: 15080}
+      Script: {instanceID: 15012}
     - Class: 114
-      Script: {instanceID: 15092}
+      Script: {instanceID: 15100}
     - Class: 114
-      Script: {instanceID: 15102}
+      Script: {instanceID: 15112}
     - Class: 114
-      Script: {instanceID: 15136}
+      Script: {instanceID: 15122}
     - Class: 114
-      Script: {instanceID: 15190}
+      Script: {instanceID: 15156}
     - Class: 114
-      Script: {instanceID: 15298}
+      Script: {instanceID: 15210}
     - Class: 114
-      Script: {instanceID: 15320}
+      Script: {instanceID: 15318}
     - Class: 114
-      Script: {instanceID: 15354}
+      Script: {instanceID: 15326}
     - Class: 114
-      Script: {instanceID: 15364}
+      Script: {instanceID: 15340}
     - Class: 114
-      Script: {instanceID: 15392}
+      Script: {instanceID: 15374}
     - Class: 114
-      Script: {instanceID: 15510}
+      Script: {instanceID: 15384}
+    - Class: 114
+      Script: {instanceID: 15412}
     - Class: 114
       Script: {instanceID: 15530}
     - Class: 114
-      Script: {instanceID: 15674}
+      Script: {instanceID: 15550}
     - Class: 114
-      Script: {instanceID: 15724}
+      Script: {instanceID: 15694}
     - Class: 114
-      Script: {instanceID: 15790}
+      Script: {instanceID: 15744}
     - Class: 114
       Script: {instanceID: 15810}
     - Class: 114
-      Script: {instanceID: 15882}
+      Script: {instanceID: 15830}
     - Class: 114
-      Script: {instanceID: 15990}
+      Script: {instanceID: 15902}
     - Class: 114
-      Script: {instanceID: 16090}
+      Script: {instanceID: 16010}
     - Class: 114
-      Script: {instanceID: 16256}
+      Script: {instanceID: 16110}
     - Class: 114
-      Script: {instanceID: 16476}
+      Script: {instanceID: 16276}
     - Class: 114
-      Script: {instanceID: 16546}
+      Script: {instanceID: 16496}
     - Class: 114
-      Script: {instanceID: 16712}
+      Script: {instanceID: 16566}
     - Class: 114
-      Script: {instanceID: 16838}
+      Script: {instanceID: 16732}
     - Class: 114
-      Script: {instanceID: 16860}
+      Script: {instanceID: 16858}
     - Class: 114
-      Script: {instanceID: 16862}
+      Script: {instanceID: 16880}
     - Class: 114
-      Script: {instanceID: 16868}
+      Script: {instanceID: 16882}
     - Class: 114
-      Script: {instanceID: 16904}
+      Script: {instanceID: 16888}
     - Class: 114
-      Script: {instanceID: 16910}
+      Script: {instanceID: 16924}
     - Class: 114
-      Script: {instanceID: 16938}
+      Script: {instanceID: 16930}
     - Class: 114
-      Script: {instanceID: 16942}
+      Script: {instanceID: 16958}
     - Class: 114
-      Script: {instanceID: 16998}
+      Script: {instanceID: 16962}
     - Class: 114
-      Script: {instanceID: 17120}
+      Script: {instanceID: 17018}
     - Class: 114
-      Script: {instanceID: 17126}
+      Script: {instanceID: 17140}
     - Class: 114
-      Script: {instanceID: 31256}
+      Script: {instanceID: 17146}
     - Class: 114
-      Script: {instanceID: 38538}
+      Script: {instanceID: 59974}
     - Class: 114
-      Script: {instanceID: 38540}
+      Script: {instanceID: 60470}
     - Class: 114
-      Script: {instanceID: 113666}
-    - Class: 114
-      Script: {instanceID: 115438}
+      Script: {instanceID: 63782}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -360,6 +363,12 @@ ScriptsOnlyBuild:
     - Class: 363
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: acdbda64bb51629736e12066c6d9b0c1
+    assemblyName: Unity.RenderPipelines.HighDefinition.Runtime.dll
+    namespaceName: UnityEngine.Rendering.HighDefinition
+    className: HDRenderPipelineAsset
   - hash:
       serializedVersion: 2
       Hash: 597cfde2e60b842b3acbd2961ff0631b
@@ -830,6 +839,24 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
+      Hash: de84aa0ae7aa8cdd86a8ebfde68d2c48
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkHandler
+  - hash:
+      serializedVersion: 2
+      Hash: 13e9f724052239514b925185b61926ea
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkedPlayer
+  - hash:
+      serializedVersion: 2
+      Hash: 719b71c2b579e49bdbf9077f9c4f69da
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkWrapper
+  - hash:
+      serializedVersion: 2
       Hash: aba7b2852ef61d175dd9602e7723d5e5
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -1224,12 +1251,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Button
-  - hash:
-      serializedVersion: 2
-      Hash: acdbda64bb51629736e12066c6d9b0c1
-    assemblyName: Unity.RenderPipelines.HighDefinition.Runtime.dll
-    namespaceName: UnityEngine.Rendering.HighDefinition
-    className: HDRenderPipelineAsset
   - hash:
       serializedVersion: 2
       Hash: 8d35f16c5022311c6f4d9432be73bfcf
@@ -1998,26 +2019,8 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualEffectGraph.Runtime.dll
     namespaceName: UnityEngine.VFX.Utility
     className: VFXUISliderBinder
-  - hash:
-      serializedVersion: 2
-      Hash: 719b71c2b579e49bdbf9077f9c4f69da
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: NetworkWrapper
-  - hash:
-      serializedVersion: 2
-      Hash: d78dd0671a1c5ddc9f3b60e1cd53da4c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: NetworkHandler
-  - hash:
-      serializedVersion: 2
-      Hash: 13e9f724052239514b925185b61926ea
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: NetworkedPlayer
   platform: 19
   scenePathNames:
   - Assets/Haunted Asylum/Scenes/HauntedAsylum.unity
-  playerPath: D:/Users/Zackary/Documents/GitkrakenRepos/DMS-Repo/DMS Unity Game/NetworkBuild/New
+  playerPath: H:/Users/Zackary/Documents/GitKraken Repos/DMS-Repo/DMS Unity Game/NetworkBuild/New
     Unity Project.exe

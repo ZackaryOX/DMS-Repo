@@ -339,5 +339,6 @@ public class PlayerInput
 
         Vector3 Final = MovementFinal + GravityFinal + Tempjumpvec;
         _controller.Move(Final);
+        //Debug.Log("Vert Vel: " + VerticalVelocity + " Horiz Vel: " + HorizontalVelocity);
     }
 }

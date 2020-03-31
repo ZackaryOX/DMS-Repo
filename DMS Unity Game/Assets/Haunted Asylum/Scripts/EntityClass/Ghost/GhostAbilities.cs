@@ -12,13 +12,15 @@ abstract public class GhostAbilities
     protected Ghost Caster;
     protected Player Target;
     protected bool Active = false;
+    protected FMOD.Studio.EventInstance AbilityInstance;
 
-    protected GhostAbilities(Ghost tempghost, Player tempplayer, float cd, float timeactive)
+    protected GhostAbilities(Ghost tempghost, Player tempplayer, float cd, float timeactive, FMOD.Studio.EventInstance tempinstance)
     {
         Caster = tempghost;
         Target = tempplayer;
         Cooldown = cd;
         TimeActive = timeactive;
+        AbilityInstance = tempinstance;
     }
 
     // Update is called once per frame
@@ -56,8 +58,8 @@ public class Materialise : GhostAbilities
     private float OldCasterSpeed;
     private float NewCasterSpeed;
     private float Divider = 2.0f;
-    public Materialise(Ghost tempghost, Player tempplayer, float cd, float timeactive, float AOERad, float AOEDmg, float Look)
-        : base(tempghost, tempplayer, cd, timeactive)
+    public Materialise(Ghost tempghost, Player tempplayer, float cd, float timeactive, float AOERad, float AOEDmg, float Look, FMOD.Studio.EventInstance tempinstance)
+        : base(tempghost, tempplayer, cd, timeactive, tempinstance)
     {
         AOEDamage = AOEDmg;
         AOERadius = AOERad;
@@ -67,7 +69,7 @@ public class Materialise : GhostAbilities
 
     public override bool Activate()
     {
-        if(TimeTillCooldown == 0.0f)
+        if (TimeTillCooldown == 0.0f)
         {
             TimeActivated = Timer.ElapsedTime;
             TimeTillCooldown = Cooldown;
@@ -79,8 +81,9 @@ public class Materialise : GhostAbilities
         return true;
     }
 
-    public override void Update(PhotonView temp)
+    public override void Update()
     {
+        //Start of trap, beginning transformation and playing music
         if (Active && IsTransforming)
         {
             TransformAlbedo += TransformSpeed * Time.deltaTime;
@@ -88,12 +91,16 @@ public class Materialise : GhostAbilities
             {
                 TransformAlbedo = 1.0f;
                 IsTransforming = false;
-                temp.RPC("SetCasterSpeed", RpcTarget.AllBuffered, Caster.GetDefaultSpeed() / Divider);
-                temp.RPC("PlayGhostAudio", RpcTarget.AllBuffered);
+                //temp.RPC("SetCasterSpeed", RpcTarget.AllBuffered, Caster.GetDefaultSpeed() / Divider);
+                Caster.SetWalkSpeed(Caster.GetDefaultSpeed() / Divider);
+                //temp.RPC("PlayGhostAudio", RpcTarget.AllBuffered);
+                AbilityInstance.start();
             }
 
-            temp.RPC("SetCasterTransparency", RpcTarget.AllBuffered, TransformAlbedo);
+            //temp.RPC("SetCasterTransparency", RpcTarget.AllBuffered, TransformAlbedo);
+            Caster.SetTransparency(TransformAlbedo);
         }
+        //End of trap, transforming back to invisible and stopping music
         else if (!Active && IsTransforming)
         {
             TransformAlbedo -= TransformSpeed * Time.deltaTime;
@@ -101,12 +108,14 @@ public class Materialise : GhostAbilities
             {
                 TransformAlbedo = 0.1f;
                 IsTransforming = false;
-                temp.RPC("StopGhostAudio", RpcTarget.AllBuffered);
+                //temp.RPC("StopGhostAudio", RpcTarget.AllBuffered);
+                AbilityInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
-            temp.RPC("SetCasterTransparency", RpcTarget.AllBuffered, TransformAlbedo);
+            //temp.RPC("SetCasterTransparency", RpcTarget.AllBuffered, TransformAlbedo);
+            Caster.SetTransparency(TransformAlbedo);
         }
 
-
+        //Checks for player and if so reduces their walkspeed and does damage to them
         if (Active && Timer.ElapsedTime - TimeActivated <= TimeActive)
         {
             Transform TargetsHeadtrans = Target.GetHead().transform;
@@ -138,13 +147,15 @@ public class Materialise : GhostAbilities
 
                     if(Target.GetWalkSpeed() != Target.GetDefaultSpeed() / Divider)
                     {
-                        temp.RPC("SetTargetSpeed", RpcTarget.AllBuffered, Target.GetDefaultSpeed() / Divider);
+                        //temp.RPC("SetTargetSpeed", RpcTarget.AllBuffered, Target.GetDefaultSpeed() / Divider); - FIX
+                        Target.SetWalkSpeed(Target.GetDefaultSpeed() / Divider);
                     }
                     
                 }
                 else if(Target.GetWalkSpeed() != Target.GetDefaultSpeed())
                 {
-                    temp.RPC("SetTargetSpeed", RpcTarget.AllBuffered, Target.GetDefaultSpeed());
+                    //temp.RPC("SetTargetSpeed", RpcTarget.AllBuffered, Target.GetDefaultSpeed()); - FIX
+                    Target.SetWalkSpeed(Target.GetDefaultSpeed());
                 }
 
 
@@ -156,21 +167,22 @@ public class Materialise : GhostAbilities
                     {
                         CurrentSanityToSet = SanityToTest;
                     }
-                    temp.RPC("SetTargetSanity", RpcTarget.AllBuffered, CurrentSanityToSet);
+                    //temp.RPC("SetTargetSanity", RpcTarget.AllBuffered, CurrentSanityToSet); - FIX
+                    Target.SetSanity(CurrentSanityToSet);
                 }
             }
 
-
-
-
         }
+        //Starts to disable the trap after the time active has been reached.
         else if (Active && Timer.ElapsedTime - TimeActivated >= TimeActive)
         {
-            temp.RPC("SetCasterSpeed", RpcTarget.AllBuffered, Caster.GetDefaultSpeed());
+            //temp.RPC("SetCasterSpeed", RpcTarget.AllBuffered, Caster.GetDefaultSpeed()); - FIX
+            Caster.SetWalkSpeed(Caster.GetDefaultSpeed());
 
             if (Target.GetWalkSpeed() != Target.GetDefaultSpeed())
             {
-                temp.RPC("SetTargetSpeed", RpcTarget.AllBuffered, Target.GetDefaultSpeed());
+                //temp.RPC("SetTargetSpeed", RpcTarget.AllBuffered, Target.GetDefaultSpeed()); - FIX
+                Target.SetWalkSpeed(Target.GetDefaultSpeed());
             }
             Active = false;
             IsTransforming = true;
@@ -184,106 +196,107 @@ public class Materialise : GhostAbilities
             {
                 TimeTillCooldown = 0.0f;
             }
+            //Debug.Log("TIMETILL COOLDOWN"+TimeTillCooldown);
         }
 
     }
-    public override void Update()
-    {
+    //public override void Update()
+    //{
 
-        if(Active && IsTransforming)
-        {
-            TransformAlbedo += TransformSpeed * Time.deltaTime;
-            if(TransformAlbedo >= 1.0f)
-            {
-                TransformAlbedo = 1.0f;
-                IsTransforming = false;
-            }
-            Caster.SetTransparency(TransformAlbedo);
-        }
-        else if(!Active && IsTransforming)
-        {
-            TransformAlbedo -= TransformSpeed * Time.deltaTime;
-            if (TransformAlbedo <= 0.1f)
-            {
-                TransformAlbedo = 0.1f;
-                IsTransforming = false;
-            }
-            Caster.SetTransparency(TransformAlbedo);
-        }
-
-
-        if (Active && Timer.ElapsedTime - TimeActivated <= TimeActive)
-        {
-            Transform TargetsHeadtrans = Target.GetHead().transform;
-            Transform Targetstrans = Target.GetObject().transform;
-            Transform Casterstrans = Caster.GetObject().transform;
-
-            int layerMask = 1 << 8;
-            layerMask = ~layerMask;
-            RaycastHit hit;
-            Vector3 Direction = Targetstrans.position - Casterstrans.position;
-            float Distance = Vector3.Distance(Casterstrans.position, Targetstrans.position);
-            if (!Physics.Raycast(Casterstrans.position, Direction, out hit,
-               Distance, layerMask)) 
-            {
+    //    if(Active && IsTransforming)
+    //    {
+    //        TransformAlbedo += TransformSpeed * Time.deltaTime;
+    //        if(TransformAlbedo >= 1.0f)
+    //        {
+    //            TransformAlbedo = 1.0f;
+    //            IsTransforming = false;
+    //        }
+    //        Caster.SetTransparency(TransformAlbedo);
+    //    }
+    //    else if(!Active && IsTransforming)
+    //    {
+    //        TransformAlbedo -= TransformSpeed * Time.deltaTime;
+    //        if (TransformAlbedo <= 0.1f)
+    //        {
+    //            TransformAlbedo = 0.1f;
+    //            IsTransforming = false;
+    //        }
+    //        Caster.SetTransparency(TransformAlbedo);
+    //    }
 
 
-                if (Vector3.Angle(TargetsHeadtrans.forward, Casterstrans.position - TargetsHeadtrans.position) <= 55)
-                {
+    //    if (Active && Timer.ElapsedTime - TimeActivated <= TimeActive)
+    //    {
+    //        Transform TargetsHeadtrans = Target.GetHead().transform;
+    //        Transform Targetstrans = Target.GetObject().transform;
+    //        Transform Casterstrans = Caster.GetObject().transform;
 
-                    Debug.Log("LOOKING AND CAN SEE");
-                    float CurrentDamage = LookDamage * Time.deltaTime;
-                    float CurrentSanityToSet = 0;
-                    float SanityToTest = Target.GetSanity() - CurrentDamage;
-                    if (SanityToTest > 0.0f)
-                    {
-                        CurrentSanityToSet = SanityToTest;
-                    }
+    //        int layerMask = 1 << 8;
+    //        layerMask = ~layerMask;
+    //        RaycastHit hit;
+    //        Vector3 Direction = Targetstrans.position - Casterstrans.position;
+    //        float Distance = Vector3.Distance(Casterstrans.position, Targetstrans.position);
+    //        if (!Physics.Raycast(Casterstrans.position, Direction, out hit,
+    //           Distance, layerMask)) 
+    //        {
 
 
-                    Target.SetSanity(CurrentSanityToSet);
+    //            if (Vector3.Angle(TargetsHeadtrans.forward, Casterstrans.position - TargetsHeadtrans.position) <= 55)
+    //            {
+
+    //                Debug.Log("LOOKING AND CAN SEE");
+    //                float CurrentDamage = LookDamage * Time.deltaTime;
+    //                float CurrentSanityToSet = 0;
+    //                float SanityToTest = Target.GetSanity() - CurrentDamage;
+    //                if (SanityToTest > 0.0f)
+    //                {
+    //                    CurrentSanityToSet = SanityToTest;
+    //                }
+
+
+    //                Target.SetSanity(CurrentSanityToSet);
 
 
 
-                }
+    //            }
 
-                if(Distance <= AOERadius)
-                {
+    //            if(Distance <= AOERadius)
+    //            {
                     
-                    float CurrentDamage = AOEDamage * Time.deltaTime;
-                    float CurrentSanityToSet = 0;
-                    float SanityToTest = Target.GetSanity() - CurrentDamage;
-                    if (SanityToTest > 0.0f)
-                    {
-                        CurrentSanityToSet = SanityToTest;
-                    }
+    //                float CurrentDamage = AOEDamage * Time.deltaTime;
+    //                float CurrentSanityToSet = 0;
+    //                float SanityToTest = Target.GetSanity() - CurrentDamage;
+    //                if (SanityToTest > 0.0f)
+    //                {
+    //                    CurrentSanityToSet = SanityToTest;
+    //                }
 
 
-                    Target.SetSanity(CurrentSanityToSet);
-                }
+    //                Target.SetSanity(CurrentSanityToSet);
+    //            }
 
-            }
-
-
+    //        }
 
 
-        }
-        else if(Active && Timer.ElapsedTime - TimeActivated >= TimeActive)
-        {
-            Active = false;
-            IsTransforming = true;
-        }
 
 
-        if(TimeTillCooldown > 0.0f)
-        {
-            TimeTillCooldown -= Time.deltaTime;
-            if(TimeTillCooldown < 0.0f)
-            {
-                TimeTillCooldown = 0.0f;
-            }
-        }
-    }
+    //    }
+    //    else if(Active && Timer.ElapsedTime - TimeActivated >= TimeActive)
+    //    {
+    //        Active = false;
+    //        IsTransforming = true;
+    //    }
+
+
+    //    if(TimeTillCooldown > 0.0f)
+    //    {
+    //        TimeTillCooldown -= Time.deltaTime;
+    //        if(TimeTillCooldown < 0.0f)
+    //        {
+    //            TimeTillCooldown = 0.0f;
+    //        }
+    //    }
+    //}
 
 
 }

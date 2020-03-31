@@ -47,7 +47,5 @@ public class Timer : MonoBehaviour
         {
             ForSecs = Second.ToString();
         }
-
-        GameTime.text = "Time: " + ForMins + ":" + ForSecs;
     }
 }
