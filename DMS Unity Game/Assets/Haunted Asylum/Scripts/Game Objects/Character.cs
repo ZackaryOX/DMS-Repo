@@ -325,7 +325,7 @@ public class Character : MonoBehaviour
     void PlayerAwake()
     {
         input = new InputManager();
-        hotbar = new PlayerInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber);
+        hotbar = new PlayerInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber, HandTarget);
         MyCamera.SetActive(false);
         //MyFBOCam.SetActive(false);
         ThisPlayer = new Player(gameObject, head, hotbar, false, input, HandTarget);

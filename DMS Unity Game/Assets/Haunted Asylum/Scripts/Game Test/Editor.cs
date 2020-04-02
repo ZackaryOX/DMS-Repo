@@ -153,7 +153,7 @@ public class Editor : MonoBehaviour
     {
         layerMask = ~layerMask;
         input = new InputManager();
-        hotbar = new PlayerInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber);
+        //hotbar = new PlayerInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber);
         ThisPlayer = new Player(gameObject, head, hotbar, true, input, HandTarget);
         Player1Stats = new StatObserver(ThisPlayer);
         Player1Score = new ScoreObserver(ThisPlayer);

@@ -42,7 +42,7 @@ public sealed class PP_Spread : CustomPostProcessVolumeComponent, IPostProcessCo
         if (Shader.Find("Hidden/Shader/PP_Spread") != null)
         {
             m_Material = new Material(Shader.Find("Hidden/Shader/PP_Spread"));
-            Debug.Log("ShaderFound");
+            //Debug.Log("ShaderFound");
         }
 
        _ghostPosition = GameObject.Find("AI");

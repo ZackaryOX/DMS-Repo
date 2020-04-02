@@ -83,9 +83,7 @@ public class QuestManager : MonoBehaviour
             Texts[0].transform.localPosition = new Vector3(-1000, -1000, 0);
             Texts.RemoveAt(0);
 
-            //Move next quest to screen
-            Images[0].transform.localPosition = new Vector3(660, 485, 0);
-            Texts[0].transform.localPosition = new Vector3(660, 485, 0);
+
 
             if (Quests.Count == 0)
             {
@@ -94,6 +92,10 @@ public class QuestManager : MonoBehaviour
             }
             else
             {
+                //Move next quest to screen
+                Images[0].transform.localPosition = new Vector3(660, 485, 0);
+                Texts[0].transform.localPosition = new Vector3(660, 485, 0);
+
                 //Activate next quest
                 Quests[0].Activate();
                 Images[0].sprite = topQuest;
