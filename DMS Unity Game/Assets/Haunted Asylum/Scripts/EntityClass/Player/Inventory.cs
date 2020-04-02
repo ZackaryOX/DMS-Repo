@@ -162,6 +162,11 @@ public class PlayerInventory : Inventory
         }
     }
 
+    public PickUp GetCurrent()
+    {
+        return Items[selected];
+    }
+
     private List<PickUp> Items = new List<PickUp>() { };
 }
 

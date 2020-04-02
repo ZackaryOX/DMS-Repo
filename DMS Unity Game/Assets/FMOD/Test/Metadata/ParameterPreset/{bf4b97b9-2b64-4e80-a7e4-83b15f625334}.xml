@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{bf4b97b9-2b64-4e80-a7e4-83b15f625334}">
+		<property name="name">
+			<value>_stamina</value>
+		</property>
+		<relationship name="folder">
+			<destination>{48af4b9f-8f22-4d6a-b61f-e3232410b93d}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{68f7d99e-ea30-499c-bf1f-c8d631866a98}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{68f7d99e-ea30-499c-bf1f-c8d631866a98}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>_none</value>
+			<value>_half</value>
+		</property>
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+	</object>
+</objects>

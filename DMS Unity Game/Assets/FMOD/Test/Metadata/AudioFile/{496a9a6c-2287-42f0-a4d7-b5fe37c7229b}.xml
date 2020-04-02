@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{496a9a6c-2287-42f0-a4d7-b5fe37c7229b}">
+		<property name="assetPath">
+			<value>cralwerWalk 4.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.1493877551020408</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9181eba0-e43e-4769-89da-bba024bb0746}</destination>
+		</relationship>
+	</object>
+</objects>

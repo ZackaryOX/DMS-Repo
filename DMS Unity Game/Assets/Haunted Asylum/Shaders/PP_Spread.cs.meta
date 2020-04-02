@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 96897fca90362194383574a7eeab86fe
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _BloodTexture: {fileID: 2800000, guid: 3c7609855b255124d9584886ab574565, type: 3}
+  - _CameraMain: {fileID: 3132189373782611520, guid: 655af897c7ad86447919120ca21d9a1e,
+      type: 3}
+  - _ghostPosition: {instanceID: 0}
+  - _Noise: {fileID: 2800000, guid: 3300e81f02e64924eb7cb7782713b126, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

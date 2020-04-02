@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{9bd41ed7-f5ae-4de4-b59f-019992ff247d}">
+		<property name="assetPath">
+			<value>interaction.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>14.183999999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{9181eba0-e43e-4769-89da-bba024bb0746}</destination>
+		</relationship>
+	</object>
+</objects>

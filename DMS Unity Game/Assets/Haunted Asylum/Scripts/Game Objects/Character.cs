@@ -25,6 +25,19 @@ public class Character : MonoBehaviour
 
     public bool IsClone = false;
 
+    bool _Pmove = false;
+    bool _localStamina = false;
+    public const float _Tile = 0;
+    public const float _Stairs = 1;
+
+    public const float _Walk = 0;
+    public const float _Run = 1;
+
+    float walkspeed = 0.5f;
+
+    private bool _heartSound = true;
+
+
     private InputManager input;
     private PausedState PauseMenu;
     private PlayerState OldState;
@@ -43,11 +56,15 @@ public class Character : MonoBehaviour
     [FMODUnity.EventRef]
     public string[] SFXEventNames;
 
+
     [FMODUnity.EventRef]
     public string[] MusicEventNames;
 
+    FMOD.Studio.EventInstance _Heartbeat;
+
     void Awake()
     {
+        InvokeRepeating("playFootsteps", 0, walkspeed);
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 144;
         PauseMenu = new PausedState();
@@ -56,11 +73,95 @@ public class Character : MonoBehaviour
         PlayerAwake();
         ThisAudioManager = new AudioManager(SFXEventNames, MusicEventNames, head);
         Debug.Log("CHARACTER CREATED");
+
     }
 
     void Update()
     {
+        
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            walkspeed = 0.2f;
 
+        }
+        else
+        {
+            walkspeed = 0.5f;
+        }
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+
+            _Pmove = true;
+
+        }
+        else
+        {
+            _Pmove = false;
+
+            // _Footsteps.setVolume(0);
+        }
+        
+
+        if (ThisPlayer.GetStamina() <= 0.5)
+        {
+            StartCoroutine(PlayStamina(ThisAudioManager.SFXEventNames[2]));
+        }
+
+        if (ThisPlayer._pickup == true)
+        {
+            //Debug.Log("Pickup Sound");
+            FMODUnity.RuntimeManager.PlayOneShot(ThisAudioManager.SFXEventNames[4], GetComponent<Transform>().position);
+            ThisPlayer._pickup = false;
+        }
+
+        if (ThisPlayer.GetSanity() < 50)
+        {
+            if (_heartSound == true)
+            {
+                _Heartbeat = FMODUnity.RuntimeManager.CreateInstance(ThisAudioManager.SFXEventNames[3]);
+                _Heartbeat.start();
+                
+                Debug.Log("Heartbeat");
+                _heartSound = false;
+            }
+            _Heartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(this.gameObject));
+
+        }
+
+
+        //else if(ThisPlayer.GetSanity() > 50)
+        //{
+        //    if (IsPlaying(_Heartbeat))
+        //    {
+        //        _Heartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //        _Heartbeat.release();
+        //        _heartSound = true;
+        //    }
+        //}
+
+
+    }
+    bool IsPlaying(FMOD.Studio.EventInstance instance)
+    {
+        FMOD.Studio.PLAYBACK_STATE state;
+        instance.getPlaybackState(out state);
+        return state != FMOD.Studio.PLAYBACK_STATE.STOPPED;
+    }
+
+
+    IEnumerator PlayStamina(string _eventAudio)
+    {
+        if (_localStamina == true)
+        {
+            yield break;
+        }
+        _localStamina = true;
+        FMODUnity.RuntimeManager.PlayOneShot(_eventAudio, GetComponent<Transform>().position);
+       // Debug.Log("StaminaSound");
+        yield return new WaitForSeconds(3);
+        _localStamina = false;
+        yield return null;
     }
 
     void OnAnimatorIK()
@@ -138,6 +239,16 @@ public class Character : MonoBehaviour
             MyCamera.SetActive(false);
         }
     }
+
+    void playFootsteps()
+    {
+        if (_Pmove == true)
+        {
+           //   Debug.Log("Footsteps");
+            FMODUnity.RuntimeManager.PlayOneShot(ThisAudioManager.SFXEventNames[1], GetComponent<Transform>().position);
+        }
+    }
+
 
     public void SetSFXVolume(float temp)
     {

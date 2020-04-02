@@ -8,6 +8,8 @@ public class Player : Entity
     public static Dictionary<int, Player> AllPlayers = new Dictionary<int, Player>();
     public Queue<IEnumerator> CoroutinesToFire = new Queue<IEnumerator>();
     static int Players = 0;
+
+    public bool _pickup = false;
     //Constructor
     public Player(GameObject thisobject, GameObject temphead, PlayerInventory tempinv, bool isEditor, InputManager tempInput, GameObject handtarget) : base(thisobject)
     {
@@ -140,11 +142,13 @@ public class Player : Entity
     {
         if (Mystate.GetPickup())
         {
-
+            _pickup = true;
             return this.ThisInventory.PickupItem(PickUp.AllItems[pickupname]);
         }
+        _pickup = false;
         return false;
     }
+
     public bool UseItemInInventory(PickUp tempitem)
     {
         return this.ThisInventory.UseItem(tempitem);
@@ -280,6 +284,11 @@ public class Player : Entity
             OldRot = NewRot;
             ThisAnim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
         }
+    }
+
+    public PickUp GetCurrentInv()
+    {
+        return ThisInventory.GetCurrent();
     }
 
     public void AddCoroutineToFire(IEnumerator CoRoutine)

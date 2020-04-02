@@ -16,6 +16,12 @@ public class CrawlerTrapNode : TrapNode
     [FMODUnity.EventRef]
     public string DamageEvent = "";
     FMOD.Studio.EventInstance Damageeventinstance;
+
+    [FMODUnity.EventRef]
+    public string scream = "";
+    FMOD.Studio.EventInstance screamEvent;
+
+    public bool _spawn = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +34,8 @@ public class CrawlerTrapNode : TrapNode
 
         Damageeventinstance = FMODUnity.RuntimeManager.CreateInstance(DamageEvent);
         //Attach the event to the object
-        
+
+
     }
 
     // Update is called once per frame
@@ -64,7 +71,9 @@ public class CrawlerTrapNode : TrapNode
                        Distance, layerMask))
                 {
                     ActivateTrap();
-                    isActive = false;
+                   
+                       
+                        isActive = false;
                 }
 
                 //
@@ -80,7 +89,10 @@ public class CrawlerTrapNode : TrapNode
     public override void ActivateTrap()
     {
         Slot.Initiate(LerpTime, Damageeventinstance);
+
+        Slot.passScream(scream);
     }
+
 
     [PunRPC]
     public void PlayAudio()

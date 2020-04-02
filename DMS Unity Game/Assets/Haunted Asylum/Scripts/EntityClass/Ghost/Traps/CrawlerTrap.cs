@@ -68,6 +68,20 @@ public class CrawlerTrap : Trap
             }
         }
     }
+
+    public void OneShotScream(string _screamPath)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot(_screamPath, CrawlerPrefab.GetComponent<Transform>().position);
+
+    }
+
+    public void passScream(string _screamPath)
+    {
+        Scream = _screamPath;
+    }
+    
+
+
     public bool Update()
     {
         if (Ghost.AllGhosts.Count > 0)
@@ -77,16 +91,22 @@ public class CrawlerTrap : Trap
             {
                 IsLerping = true;
                 CrawlerPrefab.SetActive(true);
+                if (Scream != null)
+                {
+                    OneShotScream(Scream);
+                }
                 CurrentCrawler = CrawlerPrefab;
                 CurrentCrawler.transform.position = StartPoint;
                 CurrentCrawler.transform.eulerAngles = StartRotation;
                 CreateCrawler = false;
 
                 FMODUnity.RuntimeManager.AttachInstanceToGameObject(MyDamageSound, CurrentCrawler.GetComponent<Transform>(), CurrentCrawler.GetComponent<Rigidbody>());
+
                 //trapnodeview.RPC("PlayAudio", RpcTarget.AllBuffered); - FIX
                 MyDamageSound.start();
             }
-
+           
+        
             if (IsLerping)
             {
                 bool reset = false;
@@ -200,6 +220,7 @@ public class CrawlerTrap : Trap
     private float AOERadius = 20f;
     private float AOEDamage = 12.5f;
     private FMOD.Studio.EventInstance MyDamageSound;
+    private string Scream = "";
 
 
 
