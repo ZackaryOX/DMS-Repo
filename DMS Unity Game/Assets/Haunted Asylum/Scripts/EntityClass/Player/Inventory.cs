@@ -7,12 +7,13 @@ public class Inventory
 {
 
     //Constructor:
-    public Inventory(Image Slot, Image Selected, Image emptyIcon, Text slotNumber)
+    public Inventory(Image Slot, Image Selected, Image emptyIcon, Text slotNumber, GameObject tempHand)
     {
         //Set defaut images
         noItemIcon = emptyIcon;
         notSelectedIcon = Slot;
         selectedIcon = Selected;
+        Hand = tempHand;
         //Create hotbar
         for (int i = 0; i < 10; i++)
         {
@@ -64,13 +65,14 @@ public class Inventory
 
     protected List<Image> ItemIcons = new List<Image>() { };
     protected Image noItemIcon;
+    protected GameObject Hand;
 
     protected int selected = 0;
 }
 
 public class PlayerInventory : Inventory
 {
-    public PlayerInventory(Image Slot, Image Selected, Image emptyIcon, Text Number) : base(Slot, Selected, emptyIcon, Number)
+    public PlayerInventory(Image Slot, Image Selected, Image emptyIcon, Text Number, GameObject tempHand) : base(Slot, Selected, emptyIcon, Number, tempHand)
     {
         for (int i = 0; i < 10; i++)
             Items.Add(null);
@@ -146,8 +148,10 @@ public class PlayerInventory : Inventory
     {
         if (Items[selected] != null)
         {
-            Items[selected].SetPosition(GameObject.Find("mixamorig:RightHandIndex1").transform.position);
-            Items[selected].SetRotationEuler(GameObject.Find("mixamorig:RightHandIndex1").transform.rotation.eulerAngles);
+            //Items[selected].SetPosition(GameObject.Find("mixamorig:RightHandIndex1").transform.position);
+            //Items[selected].SetRotationEuler(GameObject.Find("mixamorig:RightHandIndex1").transform.rotation.eulerAngles);
+            Items[selected].SetPosition(Hand.transform.position);
+            Items[selected].SetRotationEuler(Hand.transform.rotation.eulerAngles);
         }
     }
     public bool IsItemInHand()
@@ -172,7 +176,7 @@ public class PlayerInventory : Inventory
 
 public class GhostInventory : Inventory
 {
-    public GhostInventory(Image Slot, Image Selected, Image emptyIcon, Text Number) : base(Slot, Selected, emptyIcon, Number)
+    public GhostInventory(Image Slot, Image Selected, Image emptyIcon, Text Number, GameObject tempHand) : base(Slot, Selected, emptyIcon, Number, tempHand)
     {
         for (int i = 0; i < 10; i++)
             Traps.Add(null);

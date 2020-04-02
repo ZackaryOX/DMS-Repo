@@ -9,6 +9,7 @@ public class GhostCharacter : MonoBehaviour
 {
     Ghost ThisPlayer;
     public GameObject head;
+    public GameObject Hand;
     public GameObject MyCamera;
     public GameObject MyFBOCam;
     public Image defaultIcon;
@@ -22,6 +23,7 @@ public class GhostCharacter : MonoBehaviour
     GhostInventory hotbar;
     GhostStatObserver Player1Stats;
     GhostScoreObserver Player1Score;
+    
 
     public Sprite CrawlerIcon;
     public bool IsClone = false;
@@ -234,7 +236,7 @@ public class GhostCharacter : MonoBehaviour
     void PlayerAwake()
     {
         input = new InputManager();
-        hotbar = new GhostInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber);
+        hotbar = new GhostInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber, Hand);
         MyCamera.SetActive(false);
         //MyFBOCam.SetActive(false);
         ThisPlayer = new Ghost(gameObject, head, hotbar, false, input);
