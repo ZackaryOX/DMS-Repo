@@ -7,9 +7,9 @@ public class Door : Interactable
     public static Dictionary<string, Door> AllDoors = new Dictionary<string, Door>();
 
     //Constructor:
-    public Door(GameObject thisobject, bool islocked, PickUp KeyItem = null) : base(thisobject)
+    public Door(GameObject thisobject, bool islocked, int netID, PickUp KeyItem = null) : base(thisobject)
     {
-        this.Name = "Door" + ID.ToString();
+        this.Name = "Door" + netID.ToString();
         ThisObject.name = this.Name;
         Locked = islocked;
         MyKey = KeyItem;

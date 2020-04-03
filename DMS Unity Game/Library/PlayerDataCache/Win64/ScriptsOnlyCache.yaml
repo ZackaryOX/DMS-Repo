@@ -315,23 +315,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 16936}
     - Class: 114
-      Script: {instanceID: 117014}
+      Script: {instanceID: 159500}
     - Class: 114
-      Script: {instanceID: 117018}
+      Script: {instanceID: 159504}
     - Class: 114
-      Script: {instanceID: 117022}
+      Script: {instanceID: 159508}
     - Class: 114
-      Script: {instanceID: 117056}
+      Script: {instanceID: 159542}
     - Class: 114
-      Script: {instanceID: 117458}
+      Script: {instanceID: 159948}
     - Class: 114
-      Script: {instanceID: 117552}
+      Script: {instanceID: 160042}
     - Class: 114
-      Script: {instanceID: 117558}
+      Script: {instanceID: 160048}
     - Class: 114
-      Script: {instanceID: 117714}
+      Script: {instanceID: 160204}
     - Class: 114
-      Script: {instanceID: 121020}
+      Script: {instanceID: 163510}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1321,7 +1321,7 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerButton
   - hash:
       serializedVersion: 2
-      Hash: 73b4e25519b18990ea4bb8f0f8de7b47
+      Hash: 6843d1ea50bce2fb3c5bdaf72967fc75
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ForDoor
@@ -1772,5 +1772,5 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Haunted Asylum/Scenes/HauntedAsylum.unity
-  playerPath: D:/Users/SepehrNofal/Documents/Repositories/DMS-Repo/DMS Unity Game/NetworkBuild/New
+  playerPath: H:/Users/Zackary/Documents/GitKraken Repos/DMS-Repo/DMS Unity Game/NetworkBuild/New
     Unity Project.exe

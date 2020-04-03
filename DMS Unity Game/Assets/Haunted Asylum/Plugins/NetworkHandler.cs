@@ -196,6 +196,13 @@ public class NetworkHandler : MonoBehaviour
                 string Index = "Drawer" + NetID;
                 GameObject.Find(Index).GetComponent<ForDrawer>().DrawerInteract();
             }
+            else if (Type == "UPDDOOR")
+            {
+                int NetID = int.Parse(strRdr.ReadLine());
+                string Index = "Door" + NetID;
+                GameObject.Find(Index).GetComponent<ForDoor>().DoorUnlock();
+                GameObject.Find(Index).GetComponent<ForDoor>().DoorInteract();
+            }
             else if(Type == "UPDT")
             {
                 float TimeToSetTo = float.Parse(strRdr.ReadLine());

@@ -10,6 +10,7 @@ public class ForDoor : MonoBehaviour
     private PickUp ThisKey;
     public bool locked;
     NetworkWrapper ThisWrapper;
+    public int NetID;
 
 
     [FMODUnity.EventRef]
@@ -23,7 +24,7 @@ public class ForDoor : MonoBehaviour
     private void Awake()
     {
 
-        ThisDoor = new Door(gameObject, locked || false);
+        ThisDoor = new Door(gameObject, locked || false, NetID);
     }
     void Start()
     {
@@ -46,9 +47,7 @@ public class ForDoor : MonoBehaviour
     {
         if (GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.E))
         {
-            DoorInteract();
-
-
+            TestDoor();
         }
         else if (locked && ThisKey.GetPicked() == true && GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -62,32 +61,38 @@ public class ForDoor : MonoBehaviour
     }
 
 
-    void DoorInteract()
+    public void DoorInteract()
     {
-        if (ThisDoor.GetIsLocked() == false && ThisDoor.IsSlerping == false)
+        ThisDoor.Interact();
+        if (ThisDoor.GetIsOpened() == false)
         {
-            //string Msg = "UPDRAWER";
-            //Msg += "\n";
-            ////Msg += this.NetworkID;
-            //ThisWrapper.SendServerMessage(Msg);
-
-            ThisDoor.Interact();
-            if (ThisDoor.GetIsOpened() == false)
-            {
-                CurrentState = 0;
-            }
-            else
-            {
-                CurrentState = 1;
-            }
-
-            musiceventinstance.setParameterByName("State", CurrentState);
-            musiceventinstance.start();
+            CurrentState = 0;
         }
+        else
+        {
+            CurrentState = 1;
+        }
+
+        musiceventinstance.setParameterByName("State", CurrentState);
+        musiceventinstance.start();
+
 
     }
 
-    void DoorUnlock()
+    void TestDoor()
+    {
+        if (ThisDoor.GetIsLocked() == false && ThisDoor.IsSlerping == false)
+        {
+            string Msg = "UPDDOOR";
+            Msg += "\n";
+            Msg += this.NetID;
+            ThisWrapper.SendServerMessage(Msg);
+            DoorInteract();
+
+        }
+    }
+
+    public void DoorUnlock()
     {
         ThisDoor.UnlockDoor();
 
