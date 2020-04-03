@@ -8,7 +8,7 @@ public class QuestManager : MonoBehaviour
     //Public
     public Image background;
     public Text text;
-    public Sprite topQuest;
+    public Image escape;
 
     private List<Quest> Quests = new List<Quest>() { };
     private List<Image> Images = new List<Image>() { };
@@ -39,13 +39,13 @@ public class QuestManager : MonoBehaviour
         flashlight = PickUp.AllItems[flashlightobj.name];
         key = PickUp.AllItems[keyobj.name];
 
-        q1 = new WaypointQuest("Leave cell", waypoint1);
-        q2 = new WaypointQuest("Walk to drawer", waypoint2);
-        q3 = new PickUpQuest("Open drawer and pickup flashlight", flashlight);
-        q4 = new WaypointQuest("Walk to key", waypoint3);
-        q5 = new PickUpQuest("Pickup key", key);
-        q6 = new WaypointQuest("Walk to door", waypoint4);
-        q7 = new UseQuest("Use key and open the door", keyobj);
+        q1 = new WaypointQuest("— Leave cell —", waypoint1);
+        q2 = new WaypointQuest("— Walk to drawer —", waypoint2);
+        q3 = new PickUpQuest("— Open drawer and pickup flashlight —", flashlight);
+        q4 = new WaypointQuest("— Walk to key —", waypoint3);
+        q5 = new PickUpQuest("— Pickup key —", key);
+        q6 = new WaypointQuest("— Walk to door —", waypoint4);
+        q7 = new UseQuest("— Use key and open the door —", keyobj);
 
 
         Quests.Add(q1);
@@ -65,8 +65,8 @@ public class QuestManager : MonoBehaviour
             Texts.Add(Instantiate(text, text.transform.parent));
             Texts[i].text = Quests[i].getName();
         }
-        Images[0].transform.localPosition = new Vector3(660, 485, 0);
-        Texts[0].transform.localPosition = new Vector3(660, 485, 0);
+        Images[0].transform.localPosition = new Vector3(0, -300, 0);
+        Texts[0].transform.localPosition = new Vector3(0, -300, 0);
         Images[0].color = Color.white;
     }
 
@@ -74,38 +74,35 @@ public class QuestManager : MonoBehaviour
     void Update()
     {
         //Remove quest if completed
-        if (Quests.Count > 0 && Quests[0].getCompletion() == true)
-        {
-            //Remove the active quest
-            Quests.RemoveAt(0);
-            Images[0].transform.localPosition = new Vector3(-1000, -1000, 0);
-            Images.RemoveAt(0);
-            Texts[0].transform.localPosition = new Vector3(-1000, -1000, 0);
-            Texts.RemoveAt(0);
-
-
-
-            if (Quests.Count == 0)
-            {
-                //Deactivate this quest
-                this.gameObject.SetActive(false);
-            }
-            else
-            {
-                //Move next quest to screen
-                Images[0].transform.localPosition = new Vector3(660, 485, 0);
-                Texts[0].transform.localPosition = new Vector3(660, 485, 0);
-
-                //Activate next quest
-                Quests[0].Activate();
-                Images[0].sprite = topQuest;
-            }
-        }
-
-        if (Quests.Count != 0)
+        if (Quests.Count > 0)
         {
             //Check only top quest
             Quests[0].Update();
+
+            if (Quests[0].getCompletion() == true)
+            {
+                //Remove the active quest
+                Quests.RemoveAt(0);
+                Images[0].transform.localPosition = new Vector3(-1000, -1000, 0);
+                Images.RemoveAt(0);
+                Texts[0].transform.localPosition = new Vector3(-1000, -1000, 0);
+                Texts.RemoveAt(0);
+
+                if (Quests.Count == 0)
+                {
+                    escape.transform.localPosition = new Vector3(0, -300, 0);
+                    //Deactivate this quest
+                    this.gameObject.SetActive(false);
+                }
+                else
+                {
+                    //Move next quest to screen
+                    Images[0].transform.localPosition = new Vector3(0, -300, 0);
+                    Texts[0].transform.localPosition = new Vector3(0, -300, 0);
+                    //Activate next quest
+                    Quests[0].Activate();
+                }
+            }
         }
     }
 }

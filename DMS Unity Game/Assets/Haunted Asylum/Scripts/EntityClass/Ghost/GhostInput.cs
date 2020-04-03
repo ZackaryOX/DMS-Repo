@@ -11,10 +11,8 @@ public class GhostInput
     //Constructor 
     private float lerpSmoothingTime = 0.05f;
     private InputManager input;
-    private GhostInventory inventory;
-    public GhostInput(GameObject thisobject, GameObject tempHead, InputManager tempInput, GhostInventory tempInv)
+    public GhostInput(GameObject thisobject, GameObject tempHead, InputManager tempInput)
     {
-        inventory = tempInv;
         input = tempInput;
         _controller = thisobject.GetComponent<CharacterController>();
         _Headtransform = tempHead.GetComponent<Transform>();
@@ -190,47 +188,9 @@ public class GhostInput
 
         return 0.0f;
     }
-    private void InventoryInput()
-    {
-        //Scroll up
-        if (input.GetScrollWheel() > 0f)
-        {
-            inventory.SelectPrevious();
-        }
-        //Scroll down
-        else if (input.GetScrollWheel() < 0f)
-        {
-            inventory.SelectNext();
-        }
-
-        if (input.GetKey("one"))
-            inventory.Select(0);
-        else if (input.GetKey("two"))
-            inventory.Select(1);
-        else if (input.GetKey("three"))
-            inventory.Select(2);
-        else if (input.GetKey("four"))
-            inventory.Select(3);
-        else if (input.GetKey("five"))
-            inventory.Select(4);
-        else if (input.GetKey("six"))
-            inventory.Select(5);
-        else if (input.GetKey("seven"))
-            inventory.Select(6);
-        else if (input.GetKey("eight"))
-            inventory.Select(7);
-        else if (input.GetKey("nine"))
-            inventory.Select(8);
-        else if (input.GetKey("zero"))
-            inventory.Select(9);
-    }
-
-
 
     public void Update(Stamina playerstam, PlayerState currentstate)
     {
-        InventoryInput();
-
         int Vertical = 0;
         int Horizontal = 0;
         int Running = 0;

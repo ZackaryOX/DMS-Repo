@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-using Photon.Pun;
 using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour
 {
     Player ThisPlayer;
-    private PhotonView PV;
     public GameObject head;
     public GameObject MyCamera;
     public GameObject MyFBOCam;
@@ -51,6 +49,9 @@ public class Character : MonoBehaviour
     public GameObject keybinds;
     public GameObject confirmation;
     public GameObject UIElements;
+    public GameObject interact;
+    public GameObject youlost;
+    public GameObject youwon;
 
 
     [FMODUnity.EventRef]
@@ -68,7 +69,6 @@ public class Character : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 144;
         PauseMenu = new PausedState();
-        PV = GetComponent<PhotonView>();
         UIElements.SetActive(false);
         PlayerAwake();
         ThisAudioManager = new AudioManager(SFXEventNames, MusicEventNames, head);
@@ -187,12 +187,28 @@ public class Character : MonoBehaviour
 
             }
 
+            Vector3 Data = Player1Stats.GetData();
+
             if (!PlayedMusic)
             {
                 PlayedMusic = true;
                 ThisAudioManager.PlayMusic();
             }
-            if (input.GetKeyDown("escape"))
+            if (Data.x <= 0 && Time.timeSinceLevelLoad > 10)
+            {
+                ThisPlayer.SetState(PauseMenu);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                youlost.SetActive(true);
+            }
+            else if (ThisPlayer.Escaped)
+            {
+                ThisPlayer.SetState(PauseMenu);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                youwon.SetActive(true);
+            }
+            else if (input.GetKeyDown("escape"))
             {
                 if (OldState == null)
                 {
@@ -207,6 +223,11 @@ public class Character : MonoBehaviour
                     Resume();
                 }
             }
+            if (ThisPlayer.CanInteract)
+                interact.SetActive(true);
+            else
+                interact.SetActive(false);
+            ThisPlayer.CanInteract = false;
 
             ThisPlayer.Update();
             hotbar.Update();
@@ -214,14 +235,8 @@ public class Character : MonoBehaviour
             MyCamera.SetActive(true);
             //MyFBOCam.SetActive(true);
             UIElements.SetActive(true);
-            Vector3 Data = Player1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
-
-            if (Input.GetKey(KeyCode.O))
-                Data.z = 0;
-            if (Input.GetKey(KeyCode.P))
-                Data.x = 1;
-
+            
             var tempColor = HealthBar.color;
             tempColor.a = (100 - Data.x) / 100;
             HealthBar.color = tempColor;
@@ -320,8 +335,7 @@ public class Character : MonoBehaviour
     {
         return ThisPlayer;
     }
-
-    [PunRPC]
+    
     void PlayerAwake()
     {
         input = new InputManager();
@@ -335,7 +349,6 @@ public class Character : MonoBehaviour
         /*FOR EDITING:*/
         ThisPlayer.SetState(new TeachPickupState());
     }
-    [PunRPC]
     void UpdatePlayer(float Sanity, float health)
     {
         ThisPlayer.SetSanity(Sanity);

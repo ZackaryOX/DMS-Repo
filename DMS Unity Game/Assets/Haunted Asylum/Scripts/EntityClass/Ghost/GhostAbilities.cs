@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,10 +27,6 @@ abstract public class GhostAbilities
     {
         
     }
-    public virtual void Update(PhotonView temp)
-    {
-
-    }
     public virtual bool Activate()
     {
 
@@ -41,6 +36,10 @@ abstract public class GhostAbilities
     public float GetCoolDown()
     {
         return TimeTillCooldown;
+    }
+    public bool GetActive()
+    {
+        return Active;
     }
 }
 
@@ -71,7 +70,7 @@ public class Materialise : GhostAbilities
     {
         if (TimeTillCooldown == 0.0f)
         {
-            TimeActivated = Timer.ElapsedTime;
+            TimeActivated = Time.time;
             TimeTillCooldown = Cooldown;
             Active = true;
             IsTransforming = true;
@@ -104,9 +103,9 @@ public class Materialise : GhostAbilities
         else if (!Active && IsTransforming)
         {
             TransformAlbedo -= TransformSpeed * Time.deltaTime;
-            if (TransformAlbedo <= 0.1f)
+            if (TransformAlbedo <= 0.001f)
             {
-                TransformAlbedo = 0.1f;
+                TransformAlbedo = 0.001f;
                 IsTransforming = false;
                 //temp.RPC("StopGhostAudio", RpcTarget.AllBuffered);
                 AbilityInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -116,7 +115,7 @@ public class Materialise : GhostAbilities
         }
 
         //Checks for player and if so reduces their walkspeed and does damage to them
-        if (Active && Timer.ElapsedTime - TimeActivated <= TimeActive)
+        if (Active && Time.time - TimeActivated <= TimeActive)
         {
             Transform TargetsHeadtrans = Target.GetHead().transform;
             Transform Targetstrans = Target.GetObject().transform;
@@ -174,7 +173,7 @@ public class Materialise : GhostAbilities
 
         }
         //Starts to disable the trap after the time active has been reached.
-        else if (Active && Timer.ElapsedTime - TimeActivated >= TimeActive)
+        else if (Active && Time.time - TimeActivated >= TimeActive)
         {
             //temp.RPC("SetCasterSpeed", RpcTarget.AllBuffered, Caster.GetDefaultSpeed()); - FIX
             Caster.SetWalkSpeed(Caster.GetDefaultSpeed());

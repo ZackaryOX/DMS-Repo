@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -92,15 +91,12 @@ public class CrawlerTrapNode : TrapNode
 
         Slot.passScream(scream);
     }
-
-
-    [PunRPC]
+    
     public void PlayAudio()
     {
         Damageeventinstance.start();
     }
-
-    [PunRPC]
+    
     public void StopAudio()
     {
         Damageeventinstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

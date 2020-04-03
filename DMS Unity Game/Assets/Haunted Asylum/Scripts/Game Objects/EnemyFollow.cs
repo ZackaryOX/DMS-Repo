@@ -10,7 +10,7 @@ public class EnemyFollow : MonoBehaviour
     float walkspeed = 0.0f;
     [FMODUnity.EventRef] public string[] _EventPath;
     private Animator animator;
-    public bool Setup = false;
+    private bool Setup = false;
 
     private bool stepCol = false;
 

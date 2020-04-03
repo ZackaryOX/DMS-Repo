@@ -40,29 +40,22 @@ public class mouseHovor : MonoBehaviour
             {
                 lookingAt = GameObject.Find(Player.AllPlayers[0].GetObject().GetComponentInChildren<rayFromCamera>().lookingAt);
             }
-            
-        }
-
-        if (lookingAt)
-        {
-            if (Object.name == lookingAt.name && Vector3.Distance(Player.AllPlayers[0].GetObject().transform.position,lookingAt.transform.position) < 10)
+            if (lookingAt)
             {
-                mouseOver = true;
-                Rend.material = NewMat;
-                //Player.AllPlayers[0].CanInteract = true;
-            }
-            else
-            {
-                mouseOver = false;
-                Rend.material = OldMat;
+                if (Object.name == lookingAt.name && Vector3.Distance(Player.AllPlayers[0].GetObject().transform.position, lookingAt.transform.position) < 10)
+                {
+                    mouseOver = true;
+                    Rend.material = NewMat;
+                    Player.AllPlayers[0].CanInteract = true;
+                }
+                else
+                {
+                    mouseOver = false;
+                    Rend.material = OldMat;
+                }
+
             }
 
         }
-
-
-
-
     }
-
-
 }

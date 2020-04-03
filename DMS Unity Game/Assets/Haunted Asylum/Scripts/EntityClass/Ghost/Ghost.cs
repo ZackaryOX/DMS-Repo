@@ -7,13 +7,12 @@ public class Ghost : Entity
     public static Dictionary<int, Ghost> AllGhosts = new Dictionary<int, Ghost>();
     static int Ghosts = 0;
     //Constructor
-    public Ghost(GameObject thisobject, GameObject temphead, GhostInventory tempinv, bool isEditor, InputManager tempInput) : base(thisobject)
+    public Ghost(GameObject thisobject, GameObject temphead, bool isEditor, InputManager tempInput) : base(thisobject)
     {
         Head = temphead;
 
-        ThisInput = new GhostInput(thisobject, temphead, tempInput, tempinv);
+        ThisInput = new GhostInput(thisobject, temphead, tempInput);
         ThisStamina = new Stamina(100, 12.5f, 40.0f);
-        ThisInventory = tempinv;
         thisobject.name = "Ghost" + Ghosts.ToString();
         Health = 100;
 
@@ -102,13 +101,6 @@ public class Ghost : Entity
     {
         MyRenderers.Add(temp);
     }
-    public Trap GetTrap()
-    {
-        if (this.ThisInventory.GetTrap() == null)
-            return null;
-
-        return ThisInventory.GetTrap();
-    }
 
     public void SetTransparency(float albedo)
     {
@@ -141,6 +133,7 @@ public class Ghost : Entity
         IsClone = temp;
     }
 
+    public bool CanInteract = false;
 
     //Private
     private Dictionary<int, GhostObserver> Observers = new Dictionary<int, GhostObserver>();
@@ -150,7 +143,6 @@ public class Ghost : Entity
     private float Health;
     PlayerState Mystate;
     private int GhostNumber = 0;
-    private GhostInventory ThisInventory;
     private bool Added = false;
     private GameObject Head;
     private Stamina ThisStamina;

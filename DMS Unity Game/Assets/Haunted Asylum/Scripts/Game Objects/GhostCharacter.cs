@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,20 +11,12 @@ public class GhostCharacter : MonoBehaviour
     public GameObject Hand;
     public GameObject MyCamera;
     public GameObject MyFBOCam;
-    public Image defaultIcon;
-    public Image selectedIcon;
-    public Image emptyItem;
-    public Text SlotNumber;
     public Image StaminaBar;
-    public Image HealthBar;
     public GameObject Surfaces;
     public GameObject Sheet;
-    GhostInventory hotbar;
-    GhostStatObserver Player1Stats;
-    GhostScoreObserver Player1Score;
+    GhostStatObserver Ghost1Stats;
+    GhostScoreObserver Ghost1Score;
     
-
-    public Sprite CrawlerIcon;
     public bool IsClone = false;
 
     private InputManager input;
@@ -39,6 +30,11 @@ public class GhostCharacter : MonoBehaviour
     public GameObject keybinds;
     public GameObject confirmation;
     public GameObject UIElements;
+    public GameObject interact;
+    public GameObject youwon;
+    public GameObject youlost;
+    public Image Vision;
+    public Text abilityCooldown;
     private bool DoorsDeleted = false;
     private NetworkWrapper ThisWrapper;
 
@@ -110,10 +106,23 @@ public class GhostCharacter : MonoBehaviour
                 foreach (KeyValuePair<string, Door> entry in Door.AllDoors)
                 {
                     Destroy(entry.Value.GetObject().GetComponent<MeshCollider>());
-                    Debug.Log("deleting door colliders");
                 }
             }
-            if (input.GetKeyDown("escape"))
+            if (Player.AllPlayers[0].GetHealth() <= 0 && Time.timeSinceLevelLoad > 10)
+            {
+                ThisPlayer.SetState(PauseMenu);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                youwon.SetActive(true);
+            }
+            else if (Player.AllPlayers[0].Escaped)
+            {
+                ThisPlayer.SetState(PauseMenu);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                youlost.SetActive(true);
+            }
+            else if (input.GetKeyDown("escape"))
             {
                 if (OldState == null)
                 {
@@ -128,22 +137,44 @@ public class GhostCharacter : MonoBehaviour
                     Resume();
                 }
             }
-            if (Input.GetKeyDown(KeyCode.N))
+            if (ThisPlayer.CanInteract)
+                interact.SetActive(true);
+            else
+                interact.SetActive(false);
+            ThisPlayer.CanInteract = false;
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 string Msg = "ACTT1";
                 ThisWrapper.SendServerMessage(Msg);
                 //TestAbility.Activate();
+                var tempColor = Vision.color;
+                tempColor.a = 0;
+                Vision.color = tempColor;
+            }
+            if (TestAbility.GetCoolDown() > 0)
+            {
+                int temp = (int)TestAbility.GetCoolDown();
+                abilityCooldown.text = temp.ToString();
+                if (!TestAbility.GetActive())
+                {
+                    var tempColor = Vision.color;
+                    tempColor.a = 1;
+                    Vision.color = tempColor;
+                }
+            }
+            else
+            {
+                abilityCooldown.text = " ";
             }
             ThisPlayer.Update();
-            hotbar.Update();
             input.Update();
             Sheet.SetActive(false);
             MyCamera.SetActive(true);
             //MyFBOCam.SetActive(true);
             UIElements.SetActive(true);
-            Vector2 Data = Player1Stats.GetData();
+            Vector2 Data = Ghost1Stats.GetData();
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
-            HealthBar.transform.localScale = new Vector3(Data.x / 100, 1, 1);
             TestAbility.Update();
 
         }
@@ -231,62 +262,52 @@ public class GhostCharacter : MonoBehaviour
     {
         return ThisPlayer;
     }
-
-    [PunRPC]
+    
     void PlayerAwake()
     {
         input = new InputManager();
-        hotbar = new GhostInventory(defaultIcon, selectedIcon, emptyItem, SlotNumber, Hand);
         MyCamera.SetActive(false);
         //MyFBOCam.SetActive(false);
-        ThisPlayer = new Ghost(gameObject, head, hotbar, false, input);
-        Player1Stats = new GhostStatObserver(ThisPlayer);
-        Player1Score = new GhostScoreObserver(ThisPlayer);
+        ThisPlayer = new Ghost(gameObject, head, false, input);
+        Ghost1Stats = new GhostStatObserver(ThisPlayer);
+        Ghost1Score = new GhostScoreObserver(ThisPlayer);
         /*FOR TUTORIAL:*///ThisPlayer.SetState(new TeachWalkState());
         /*FOR EDITING:*/
         ThisPlayer.SetState(new TeachPickupState());
 
         CrawlerTrap crawlertemp = new CrawlerTrap();
-        hotbar.AddTrap(crawlertemp, CrawlerIcon);
     }
-    [PunRPC]
     void SetPosition()
     {
         Debug.Log("THIS IS HOW MANY PLAYERS: " + Player.AllPlayers.Count + " FROM PLAYER " + ThisPlayer.GetName());
         //Player1.SetPosition(GameObject.Find("Spawn0").transform.position);
     }
-
-    [PunRPC]
+    
     public void SetCasterTransparency(float albedo)
     {
         Ghost.AllGhosts[0].SetTransparency(albedo);
     }
-
-    [PunRPC]
+    
     public void SetTargetSanity(float newSanity)
     {
         Player.AllPlayers[0].SetSanity(newSanity);
     }
-
-    [PunRPC]
+    
     public void SetTargetSpeed(float newspeed)
     {
         Player.AllPlayers[0].SetWalkSpeed(newspeed);
     }
-
-    [PunRPC]
+    
     public void SetCasterSpeed(float newspeed)
     {
         Ghost.AllGhosts[0].SetWalkSpeed(newspeed);
     }
-
-    [PunRPC]
+    
     public void PlayGhostAudio()
     {
         AbilityInstance.start();
     }
-
-    [PunRPC]
+    
     public void StopGhostAudio()
     {
         AbilityInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

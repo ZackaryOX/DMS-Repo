@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -296,10 +295,12 @@ public class Player : Entity
         this.CoroutinesToFire.Enqueue(CoRoutine);
     }
     public InputManager input;
+    public bool CanInteract = false;
+    public bool Escaped = false;
 
     //Private
     private Dictionary<int, PlayerObserver> Observers = new Dictionary<int, PlayerObserver>();
-    private float Health;
+    private float Health = 100;
     private float Sanity;
     PlayerState Mystate;
     private GameObject DefaultHandTarget;

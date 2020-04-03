@@ -41,25 +41,17 @@ public class GhostmouseHover : MonoBehaviour
                 lookingAt = GameObject.Find(Ghost.AllGhosts[0].GetObject().GetComponentInChildren<rayFromCamera>().lookingAt);
             }
 
+            if (Object == lookingAt && Vector3.Distance(Ghost.AllGhosts[0].GetObject().transform.position, lookingAt.transform.position) < 10)
+            {
+                mouseOver = true;
+                Rend.material = NewMat;
+                Ghost.AllGhosts[0].CanInteract = true;
+            }
+            else
+            {
+                mouseOver = false;
+                Rend.material = OldMat;
+            }
         }
-
-
-        if (Object == lookingAt && Vector3.Distance(Ghost.AllGhosts[0].GetObject().transform.position, lookingAt.transform.position) < 10)
-        {
-            mouseOver = true;
-            Rend.material = NewMat;
-            //Ghost.AllGhosts[0].CanInteract = true;
-        }
-        else
-        {
-            mouseOver = false;
-            Rend.material = OldMat;
-        }
-
-
-
-
     }
-
-
 }
