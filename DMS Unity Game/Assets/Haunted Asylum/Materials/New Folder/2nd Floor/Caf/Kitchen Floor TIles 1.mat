@@ -189,8 +189,8 @@ Material:
     - _RefractionModel: 0
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5
-    - _SmoothnessRemapMax: 0.86343217
-    - _SmoothnessRemapMin: 0.14000845
+    - _SmoothnessRemapMax: 0.53844166
+    - _SmoothnessRemapMin: 0.1504938
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
     - _SpecularOcclusionMode: 1
