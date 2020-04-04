@@ -55,6 +55,15 @@ public class GhostCharacter : MonoBehaviour
     [FMODUnity.EventRef]
     public string AbilityAudio;
     FMOD.Studio.EventInstance AbilityInstance;
+
+
+    FMOD.Studio.EventInstance _Breathing;
+
+    FMOD.Studio.EventInstance _Whisper;
+
+    bool _WhisperSound = true;
+
+    bool _BreathingSound = true;
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -82,8 +91,28 @@ public class GhostCharacter : MonoBehaviour
     }
     void Update()
     {
+        if (_BreathingSound == true)
+        {
+            _Breathing = FMODUnity.RuntimeManager.CreateInstance(ThisAudioManager.SFXEventNames[0]);
+            _Breathing.start();
 
+            _BreathingSound = false;
+        }
+        _Breathing.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(this.gameObject));
+
+        if (Player.AllPlayers[0].GetSanity() < 25)
+        {
+            if (_WhisperSound == true)
+            {
+                _Whisper = FMODUnity.RuntimeManager.CreateInstance(ThisAudioManager.SFXEventNames[1]);
+                _Whisper.start();
+
+                _WhisperSound = false;
+            }
+            _Whisper.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(this.gameObject));
+        }
     }
+
 
     void LateUpdate()
     {

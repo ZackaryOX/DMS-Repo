@@ -6,6 +6,9 @@ public class Fusebox : MonoBehaviour
 {
     NetworkWrapper ThisWrapper;
     private bool Activated = false;
+
+    [FMODUnity.EventRef]
+    public string _SwitchAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,7 @@ public class Fusebox : MonoBehaviour
     {
         if (GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.E) && !Activated )
         {
+            FMODUnity.RuntimeManager.PlayOneShot(_SwitchAudio, GetComponent<Transform>().position);
             ForDoor Door1 = GameObject.Find("Door250").GetComponent<ForDoor>();
             Door1.DoorUnlock();
             Door1.DoorInteract();

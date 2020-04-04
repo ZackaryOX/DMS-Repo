@@ -70,7 +70,7 @@ public class CrawlerTrap : Trap
 
     public void OneShotScream(string _screamPath)
     {
-        FMODUnity.RuntimeManager.PlayOneShot(_screamPath, CrawlerPrefab.GetComponent<Transform>().position);
+        FMODUnity.RuntimeManager.PlayOneShot(_screamPath, CrawlerPrefab.GetComponent<Transform>().localPosition);
 
     }
 

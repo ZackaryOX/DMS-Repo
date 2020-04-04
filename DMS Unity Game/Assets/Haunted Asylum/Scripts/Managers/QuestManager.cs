@@ -53,7 +53,7 @@ public class QuestManager : MonoBehaviour
         q4 = new WaypointQuest("— Walk to key —", waypoint3);
         q5 = new PickUpQuest("— Pickup key —", key);
         q6 = new WaypointQuest("— Walk to door —", waypoint4);
-        q7 = new UseQuest("— Use key and open the door —", keyobj);
+        q7 = new UseQuest("— Left Click to use key and 'E' to open the door —", keyobj);
         q8 = new PickUpQuest("— Find and pickup keycard —", keycard);
         q9 = new UseQuest("— Use keycard to open a door —", keycardobj);
         q10 = new WaypointQuest("— Find and activate fusebox —", waypoint5);

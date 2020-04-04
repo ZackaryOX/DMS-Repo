@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CameraTex:
-        m_Texture: {fileID: 8400000, guid: debc6888ef79632478ee033c7b56df27, type: 2}
+        m_Texture: {fileID: 2800000, guid: e55032a5b7f552b46a1fbf1688dfcb77, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
