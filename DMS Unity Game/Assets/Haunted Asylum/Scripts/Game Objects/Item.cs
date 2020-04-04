@@ -25,8 +25,7 @@ public class Item : MonoBehaviour
             {
                 Player.AllPlayers[0].AddCoroutineToFire(Player.AllPlayers[0].PickUpCoroutine());
                 transform.parent = null;
-                GetComponent<MeshCollider>().isTrigger = true;
-                GetComponent<mouseHovor>().enabled = false;
+                GetComponent<BoxCollider>().enabled = false;
                 GetComponent<mouseHovor>().mouseOver = false;
             }
         }

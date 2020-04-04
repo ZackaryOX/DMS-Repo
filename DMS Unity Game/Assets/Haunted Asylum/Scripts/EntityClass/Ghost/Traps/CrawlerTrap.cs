@@ -185,7 +185,6 @@ public class CrawlerTrap : Trap
                         }
                         //temp.RPC("SetTargetSanity", RpcTarget.AllBuffered, CurrentSanityToSet);
                         Target.SetSanity(CurrentSanityToSet);
-                        Debug.Log("setting sanity to: " + CurrentSanityToSet);
                     }
                 }
                 //}

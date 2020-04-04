@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class GhostCharacter : MonoBehaviour
 {
@@ -35,6 +36,11 @@ public class GhostCharacter : MonoBehaviour
     public GameObject youlost;
     public Image Vision;
     public Text abilityCooldown;
+    public Image Ability;
+    public Sprite abilityOff;
+    public Sprite abilityOn;
+    private bool playVideo;
+    private float AbilityTime = 0;
     private bool DoorsDeleted = false;
     private NetworkWrapper ThisWrapper;
 
@@ -64,7 +70,7 @@ public class GhostCharacter : MonoBehaviour
 
         ThisPlayer.AddRenderer(Surfaces.GetComponent<SkinnedMeshRenderer>());
         ThisPlayer.AddRenderer(Sheet.GetComponent<SkinnedMeshRenderer>());
-        ThisPlayer.SetTransparency(0.2f);
+        ThisPlayer.SetTransparency(0.0001f);
 
 
     }
@@ -114,6 +120,11 @@ public class GhostCharacter : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 youwon.SetActive(true);
+                if (playVideo)
+                {
+                    youwon.gameObject.GetComponent<VideoPlayer>().Play();
+                    playVideo = false;
+                }
             }
             else if (Player.AllPlayers[0].Escaped)
             {
@@ -121,6 +132,11 @@ public class GhostCharacter : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 youlost.SetActive(true);
+                if (playVideo)
+                {
+                    youlost.gameObject.GetComponent<VideoPlayer>().Play();
+                    playVideo = false;
+                }
             }
             else if (input.GetKeyDown("escape"))
             {
@@ -151,13 +167,20 @@ public class GhostCharacter : MonoBehaviour
                 var tempColor = Vision.color;
                 tempColor.a = 0;
                 Vision.color = tempColor;
+                Ability.sprite = abilityOn;
+                AbilityTime = 10;
             }
-            if (TestAbility.GetCoolDown() > 0)
+            if (AbilityTime > 0)
             {
-                int temp = (int)TestAbility.GetCoolDown();
-                abilityCooldown.text = temp.ToString();
-                if (!TestAbility.GetActive())
+                AbilityTime -= Time.deltaTime;
+                if (AbilityTime <= 5)
                 {
+                    Ability.sprite = abilityOff;
+
+                    //int temp = (int)TestAbility.GetCoolDown();
+                    int temp = (int)AbilityTime;
+                    abilityCooldown.text = temp.ToString();
+
                     var tempColor = Vision.color;
                     tempColor.a = 1;
                     Vision.color = tempColor;

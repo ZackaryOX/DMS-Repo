@@ -103,9 +103,9 @@ public class Materialise : GhostAbilities
         else if (!Active && IsTransforming)
         {
             TransformAlbedo -= TransformSpeed * Time.deltaTime;
-            if (TransformAlbedo <= 0.001f)
+            if (TransformAlbedo <= 0.0001f)
             {
-                TransformAlbedo = 0.001f;
+                TransformAlbedo = 0.0001f;
                 IsTransforming = false;
                 //temp.RPC("StopGhostAudio", RpcTarget.AllBuffered);
                 AbilityInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

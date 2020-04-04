@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class Character : MonoBehaviour
 {
@@ -34,6 +35,9 @@ public class Character : MonoBehaviour
     float walkspeed = 0.5f;
 
     private bool _heartSound = true;
+
+    private bool playVideo = true;
+
 
 
     private InputManager input;
@@ -194,12 +198,17 @@ public class Character : MonoBehaviour
                 PlayedMusic = true;
                 ThisAudioManager.PlayMusic();
             }
-            if (Data.x <= 0 && Time.timeSinceLevelLoad > 10)
+            if (Data.x <= 0 && Time.timeSinceLevelLoad > 10 && !ThisPlayer.Escaped)
             {
                 ThisPlayer.SetState(PauseMenu);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 youlost.SetActive(true);
+                if (playVideo)
+                {
+                    youlost.gameObject.GetComponent<VideoPlayer>().Play();
+                    playVideo = false;
+                }
             }
             else if (ThisPlayer.Escaped)
             {
@@ -207,6 +216,12 @@ public class Character : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 youwon.SetActive(true);
+                ThisPlayer.Escaped = true;
+                if (playVideo)
+                {
+                    youwon.gameObject.GetComponent<VideoPlayer>().Play();
+                    playVideo = false;
+                }
             }
             else if (input.GetKeyDown("escape"))
             {
@@ -236,7 +251,10 @@ public class Character : MonoBehaviour
             //MyFBOCam.SetActive(true);
             UIElements.SetActive(true);
             StaminaBar.transform.localScale = new Vector3(Data.y / 100, 1, 1);
-            
+
+            if (Input.GetKey(KeyCode.P))
+                ThisPlayer.Escaped = true;
+
             var tempColor = HealthBar.color;
             tempColor.a = (100 - Data.x) / 100;
             HealthBar.color = tempColor;

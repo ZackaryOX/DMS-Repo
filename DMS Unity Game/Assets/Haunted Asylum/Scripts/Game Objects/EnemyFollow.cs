@@ -11,8 +11,11 @@ public class EnemyFollow : MonoBehaviour
     [FMODUnity.EventRef] public string[] _EventPath;
     private Animator animator;
     private bool Setup = false;
-
+    private bool Attacking = false;
+    public int Damage = 10;
     private bool stepCol = false;
+    private float Counting = 0.0f;
+    public bool IsAI = false;
 
     public GameObject _Player;
 
@@ -36,7 +39,7 @@ public class EnemyFollow : MonoBehaviour
                 Setup = true;
             }
         }
-        else if (Setup)
+        else if (Setup && !Attacking)
         {
             if (agent.velocity.magnitude < 0.5f)
                 animator.SetBool("IsWalking", false);
@@ -58,7 +61,7 @@ public class EnemyFollow : MonoBehaviour
             Vector3 direction = (target.position - transform.position).normalized;
             transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
-            if(agent.velocity.x == 0 && agent.velocity.y == 0)
+            if (agent.velocity.x == 0 && agent.velocity.y == 0)
             {
                 CancelInvoke();
                 stepCol = true;
@@ -72,8 +75,35 @@ public class EnemyFollow : MonoBehaviour
                 }
             }
 
-            //Debug.Log(agent.velocity);
+            Player Target = Player.AllPlayers[0];
+            Transform Targetstrans = Target.GetObject().transform;
+            Transform Casterstrans = gameObject.transform;
+            float Distance = Vector3.Distance(Casterstrans.position, Targetstrans.position);
+
+            if (Distance <= 4)
+            {
+                Player.AllPlayers[0].SetHealth(Player.AllPlayers[0].GetHealth() - Damage);
+                animator.SetBool("IsRunning", false);
+                animator.SetBool("IsWalking", false);
+                animator.SetBool("IsAttacking", true);
+                agent.isStopped = true;
+                Attacking = true;
+            }
         }
+        else if (Attacking)
+        {
+            Counting += Time.deltaTime;
+            if (Counting >= 1.2f)
+            {
+
+                Attacking = false;
+                agent.isStopped = false;
+                Counting = 0;
+                animator.SetBool("IsAttacking", false);
+            }
+        }
+
+
     }
 
     private void OnTriggerEnter(Collider other)

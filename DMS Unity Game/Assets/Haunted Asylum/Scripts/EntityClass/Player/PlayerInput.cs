@@ -217,16 +217,6 @@ public class PlayerInput
             inventory.Select(3);
         else if (input.GetKey("five"))
             inventory.Select(4);
-        else if (input.GetKey("six"))
-            inventory.Select(5);
-        else if (input.GetKey("seven"))
-            inventory.Select(6);
-        else if (input.GetKey("eight"))
-            inventory.Select(7);
-        else if (input.GetKey("nine"))
-            inventory.Select(8);
-        else if (input.GetKey("zero"))
-            inventory.Select(9);
     }
 
 

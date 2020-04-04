@@ -8,7 +8,6 @@ public class QuestManager : MonoBehaviour
     //Public
     public Image background;
     public Text text;
-    public Image escape;
 
     private List<Quest> Quests = new List<Quest>() { };
     private List<Image> Images = new List<Image>() { };
@@ -21,8 +20,12 @@ public class QuestManager : MonoBehaviour
     public GameObject waypoint4;
     public GameObject flashlightobj;
     public GameObject keyobj;
+    public GameObject keycardobj;
+    public GameObject waypoint5;
+    public GameObject waypoint6;
     private PickUp flashlight;
     private PickUp key;
+    private PickUp keycard;
 
     //Quests
     private WaypointQuest q1;
@@ -32,12 +35,17 @@ public class QuestManager : MonoBehaviour
     private PickUpQuest q5;
     private WaypointQuest q6;
     private UseQuest q7;
+    private PickUpQuest q8;
+    private UseQuest q9;
+    private WaypointQuest q10;
+    private WaypointQuest q11;
 
     // Start is called before the first frame update
     void Start()
     {
         flashlight = PickUp.AllItems[flashlightobj.name];
         key = PickUp.AllItems[keyobj.name];
+        keycard = PickUp.AllItems[keycardobj.name];
 
         q1 = new WaypointQuest("— Leave cell —", waypoint1);
         q2 = new WaypointQuest("— Walk to drawer —", waypoint2);
@@ -46,6 +54,11 @@ public class QuestManager : MonoBehaviour
         q5 = new PickUpQuest("— Pickup key —", key);
         q6 = new WaypointQuest("— Walk to door —", waypoint4);
         q7 = new UseQuest("— Use key and open the door —", keyobj);
+        q8 = new PickUpQuest("— Find and pickup keycard —", keycard);
+        q9 = new UseQuest("— Use keycard to open a door —", keycardobj);
+        q10 = new WaypointQuest("— Find and activate fusebox —", waypoint5);
+        q11 = new WaypointQuest("— Escape —", waypoint6);
+
 
 
         Quests.Add(q1);
@@ -55,6 +68,10 @@ public class QuestManager : MonoBehaviour
         Quests.Add(q5);
         Quests.Add(q6);
         Quests.Add(q7);
+        Quests.Add(q8);
+        Quests.Add(q9);
+        Quests.Add(q10);
+        Quests.Add(q11);
         Quests[0].Activate();
 
         //Create UI
@@ -90,7 +107,6 @@ public class QuestManager : MonoBehaviour
 
                 if (Quests.Count == 0)
                 {
-                    escape.transform.localPosition = new Vector3(0, -300, 0);
                     //Deactivate this quest
                     this.gameObject.SetActive(false);
                 }

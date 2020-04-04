@@ -9,6 +9,7 @@ public class ForDoor : MonoBehaviour
     public GameObject Keyobject;
     private PickUp ThisKey;
     public bool locked;
+    public bool _PermaLocked;
     NetworkWrapper ThisWrapper;
     public int NetID;
 
@@ -16,6 +17,9 @@ public class ForDoor : MonoBehaviour
     [FMODUnity.EventRef]
     public string musicEventName = "";
     FMOD.Studio.EventInstance musiceventinstance;
+
+    [FMODUnity.EventRef]
+    public string _LockedSoundPath = "";
 
     private float CurrentState = 0;
 
@@ -45,20 +49,25 @@ public class ForDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.E))
+        if (GetComponent<mouseHovor>())
         {
-            TestDoor();
-        }
-        else if (locked && ThisKey.GetPicked() == true && GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (Player.AllPlayers[0].UseItemInInventory(ThisKey))
+            if (GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.E))
             {
-                DoorUnlock();
+                TestDoor();
             }
+            else if (_PermaLocked == false && locked && ThisKey.GetPicked() == true && GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                if (Player.AllPlayers[0].UseItemInInventory(ThisKey))
+                {
+                    DoorUnlock();
+                }
 
+            }
         }
         ThisDoor.Update();
     }
+
+
 
 
     public void DoorInteract()
@@ -89,6 +98,14 @@ public class ForDoor : MonoBehaviour
             ThisWrapper.SendServerMessage(Msg);
             DoorInteract();
 
+        }
+
+        if (ThisDoor.GetIsLocked() == true)
+        {
+            if (_LockedSoundPath != null)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot(_LockedSoundPath, GetComponent<Transform>().position);
+            }
         }
     }
 

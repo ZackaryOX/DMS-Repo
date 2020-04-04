@@ -5,12 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Haunted Asylum/Scenes/Lobby.unity
-    guid: 670e021b83f26404cbf18156538d4752
+  - enabled: 1
+    path: Assets/Haunted Asylum/Scenes/Intro.unity
+    guid: a4e33bf90d08e1b4599bdb924c66af93
+  - enabled: 1
+    path: Assets/Haunted Asylum/Scenes/MainMenu.unity
+    guid: 40ea7e0b3e68d124382f8df326d77379
   - enabled: 1
     path: Assets/Haunted Asylum/Scenes/HauntedAsylum.unity
     guid: 2a422de1a082e4d44b5dd86a189be571

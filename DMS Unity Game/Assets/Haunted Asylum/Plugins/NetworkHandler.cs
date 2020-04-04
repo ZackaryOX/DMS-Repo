@@ -19,6 +19,8 @@ public class NetworkHandler : MonoBehaviour
     public GameObject GhostContainer;
     public GameObject GhostModel;
     public GameObject GhostCam;
+    public GameObject GhostLight;
+    public GameObject QuestCanvas;
 
     Vector3 PrevPos = new Vector3(0, 0, 0);
     Vector3 PrevRot = new Vector3(0, 0, 0);
@@ -94,6 +96,8 @@ public class NetworkHandler : MonoBehaviour
                 GhostContainer.SetActive(true);
                 Avatar.SetActive(true);
                 GhostCam.SetActive(true);
+                GhostLight.SetActive(true);
+                QuestCanvas.SetActive(false);
 
 
                 //Other client

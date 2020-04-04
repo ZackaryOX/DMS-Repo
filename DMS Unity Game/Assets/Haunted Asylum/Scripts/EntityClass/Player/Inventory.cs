@@ -15,20 +15,20 @@ public class Inventory
         selectedIcon = Selected;
         Hand = tempHand;
         //Create hotbar
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             //Create background slots
             Slots.Add(GameObject.Instantiate(Slot, Slot.transform.parent));
-            Slots[i].transform.localPosition = new Vector3(-500 + 110 * i, -450, 0);
+            Slots[i].transform.localPosition = new Vector3(-220 + 110 * i, -450, 0);
             Text temp = GameObject.Instantiate(slotNumber, slotNumber.transform.parent);
-            temp.transform.localPosition = new Vector3(-470 + 110 * i, -480, 0);
+            temp.transform.localPosition = new Vector3(-185 + 110 * i, -480, 0);
             int tempNumber = i + 1;
             if (tempNumber == 10)
-                tempNumber = 0;
+                tempNumber = 1;
             temp.text = tempNumber.ToString();
             //Create item slots
             ItemIcons.Add(GameObject.Instantiate(emptyIcon, emptyIcon.transform.parent));
-            ItemIcons[i].transform.localPosition = new Vector3(-500 + 110 * i, -450, 0);
+            ItemIcons[i].transform.localPosition = new Vector3(-220 + 110 * i, -450, 0);
         }
         //Set selected slot to "Selected" sprite
         Slots[selected].GetComponent<Image>().sprite = selectedIcon.sprite;
@@ -74,20 +74,21 @@ public class PlayerInventory : Inventory
 {
     public PlayerInventory(Image Slot, Image Selected, Image emptyIcon, Text Number, GameObject tempHand) : base(Slot, Selected, emptyIcon, Number, tempHand)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
             Items.Add(null);
     }
 
     public bool PickupItem(PickUp item)
     {
-        if (item.getCanBePicked() == true)
+        if (item.getCanBePicked())
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (Items[i] == null)
                 {
                     item.SetPosition(new Vector3(-100, -100, -100));
                     item.SetPicked(true);
+                    item.SetCanBePicked(false);
                     Items[i] = item;
                     //Change Hotbar sprite to item's sprite
                     ItemIcons[i].GetComponent<Image>().sprite = Items[i].GetIcon();
@@ -127,7 +128,7 @@ public class PlayerInventory : Inventory
             Items[selected].SetPosition(new Vector3(-100, -100, -100));
         Slots[selected].GetComponent<Image>().sprite = notSelectedIcon.sprite;
         selected++;
-        if (selected > 9)
+        if (selected > 4)
             selected = 0;
         //Change new selected to "selected" sprite
         Slots[selected].GetComponent<Image>().sprite = selectedIcon.sprite;
@@ -140,7 +141,7 @@ public class PlayerInventory : Inventory
         Slots[selected].GetComponent<Image>().sprite = notSelectedIcon.sprite;
         selected--;
         if (selected < 0)
-            selected = 9;
+            selected = 4;
         //Change new selected to "selected" sprite
         Slots[selected].GetComponent<Image>().sprite = selectedIcon.sprite;
     }
@@ -150,7 +151,7 @@ public class PlayerInventory : Inventory
         {
             //Items[selected].SetPosition(GameObject.Find("mixamorig:RightHandIndex1").transform.position);
             //Items[selected].SetRotationEuler(GameObject.Find("mixamorig:RightHandIndex1").transform.rotation.eulerAngles);
-            Items[selected].SetPosition(Hand.transform.position);
+            Items[selected].SetPosition(new Vector3(Hand.transform.position.x, Hand.transform.position.y + 0.1f, Hand.transform.position.z));
             Items[selected].SetRotationEuler(Hand.transform.rotation.eulerAngles);
         }
     }
