@@ -55,7 +55,7 @@ public class ForDoor : MonoBehaviour
             {
                 TestDoor();
             }
-            else if (_PermaLocked == false && locked && ThisKey.GetPicked() == true && GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.Mouse0))
+            else if (!_PermaLocked && locked && ThisKey.GetPicked() == true && GetComponent<mouseHovor>().mouseOver == true && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 if (Player.AllPlayers[0].UseItemInInventory(ThisKey))
                 {
@@ -90,7 +90,7 @@ public class ForDoor : MonoBehaviour
 
     void TestDoor()
     {
-        if (ThisDoor.GetIsLocked() == false && ThisDoor.IsSlerping == false)
+        if (ThisDoor.GetIsLocked() == false && ThisDoor.IsSlerping == false && !_PermaLocked)
         {
             string Msg = "UPDDOOR";
             Msg += "\n";
@@ -100,7 +100,7 @@ public class ForDoor : MonoBehaviour
 
         }
 
-        if (ThisDoor.GetIsLocked() == true)
+        if (ThisDoor.GetIsLocked() == true || _PermaLocked)
         {
             if (_LockedSoundPath != null)
             {
