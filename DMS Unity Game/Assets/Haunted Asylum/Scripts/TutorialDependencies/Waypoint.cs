@@ -9,15 +9,15 @@ public class Waypoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        
+
+
     }
 
     void Update()
     {
 
 
-        if(Player.AllPlayers.Count == 0)
+        if (Player.AllPlayers.Count == 0)
         {
 
         }
@@ -29,9 +29,20 @@ public class Waypoint : MonoBehaviour
         {
             Player.AllPlayers[0].AdvanceLevel();
             Player.AllPlayers[0].AdvanceLevel();
-            if(LastWaypoint)
+            if (LastWaypoint)
             {
                 Player.AllPlayers[0].Escaped = true;
+                NetworkHandler.PlayerWon = true;
+
+                GameObject NetworkManager = GameObject.Find("NetworkManager");
+                NetworkWrapper ThisWrapper = NetworkManager.GetComponent<NetworkWrapper>();
+                Timer ThisTimer = NetworkManager.GetComponent<Timer>();
+                string Msg = "";
+                Msg += "ADDSCORE";
+                Msg += '\n';
+                Msg += ThisTimer.ReturnTime();
+
+                ThisWrapper.SendServerMessage(Msg);
             }
             this.gameObject.SetActive(false);
         }

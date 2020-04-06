@@ -143,7 +143,7 @@ public class GhostCharacter : MonoBehaviour
                     Destroy(entry.Value.GetObject().GetComponent<MeshCollider>());
                 }
             }
-            if (Player.AllPlayers[0].GetHealth() <= 0 && Time.timeSinceLevelLoad > 10)
+            if (NetworkHandler.GhostWon)
             {
                 ThisPlayer.SetState(PauseMenu);
                 Cursor.lockState = CursorLockMode.None;
@@ -155,7 +155,7 @@ public class GhostCharacter : MonoBehaviour
                     playVideo = false;
                 }
             }
-            else if (Player.AllPlayers[0].Escaped)
+            else if (NetworkHandler.PlayerWon)
             {
                 ThisPlayer.SetState(PauseMenu);
                 Cursor.lockState = CursorLockMode.None;

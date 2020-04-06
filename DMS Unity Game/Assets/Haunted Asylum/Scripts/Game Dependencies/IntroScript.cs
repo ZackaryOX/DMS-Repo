@@ -3,36 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
-public class MenuScript : MonoBehaviour
+public class IntroScript : MonoBehaviour
 {
-    public GameObject Loading;
+    public GameObject Video;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Loading.SetActive(false);
+        Video.GetComponent<VideoPlayer>().Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Video.GetComponent<VideoPlayer>().isPaused)
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
-
-
     public void Skip()
     {
         SceneManager.LoadScene("MainMenu");
-    }
-    public void Play()
-    {
-        Loading.SetActive(true);
-        SceneManager.LoadScene("HauntedAsylum");
-    }
-    public void Exit()
-    {
-        Application.Quit();
     }
 }

@@ -200,6 +200,7 @@ public class Character : MonoBehaviour
             }
             if (Data.x <= 0 && Time.timeSinceLevelLoad > 10 && !ThisPlayer.Escaped)
             {
+                NetworkHandler.GhostWon = true;
                 ThisPlayer.SetState(PauseMenu);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;

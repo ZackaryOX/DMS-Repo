@@ -85,7 +85,7 @@ public class NetworkWrapper : MonoBehaviour
 
     void Awake()
     {
-        JoinGame();
+        //JoinGame();
     }
 
     void Update()

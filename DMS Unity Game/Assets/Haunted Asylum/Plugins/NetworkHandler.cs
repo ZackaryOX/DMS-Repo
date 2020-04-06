@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NetworkHandler : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class NetworkHandler : MonoBehaviour
     public static float WaitTime = 0.1f;
     public float ElapsedTime = 0;
 
+    public static bool PlayerWon = false;
+    public static bool GhostWon = false;
 
     public GameObject PlayerContainer;
     public GameObject PlayerModel;
@@ -21,6 +24,10 @@ public class NetworkHandler : MonoBehaviour
     public GameObject GhostCam;
     public GameObject GhostLight;
     public GameObject QuestCanvas;
+
+    public Text first;
+    public Text second;
+    public Text third;
 
     Vector3 PrevPos = new Vector3(0, 0, 0);
     Vector3 PrevRot = new Vector3(0, 0, 0);
@@ -81,9 +88,9 @@ public class NetworkHandler : MonoBehaviour
                 GhostModel.AddComponent<NetworkedPlayer>();
                 ClientToReplicate = GhostModel.GetComponent<NetworkedPlayer>();
                 GhostModel.GetComponent<GhostCharacter>().IsClone = true;
-                
-                
-                
+
+
+
                 PrevPos = Avatar.transform.position;
                 PrevRot = Avatar.transform.eulerAngles;
 
@@ -194,6 +201,16 @@ public class NetworkHandler : MonoBehaviour
 
                 ClientToReplicate.AddUpdate(Pos, Rot, Anims);
             }
+            else if (Type == "UPDSCORE")
+            {
+                string First = strRdr.ReadLine();
+                string Second = strRdr.ReadLine();
+                string Third = strRdr.ReadLine();
+
+                first.text = First;
+                second.text = Second;
+                third.text = Third;
+            }
             else if (Type == "UPDRAWER")
             {
                 int NetID = int.Parse(strRdr.ReadLine());
@@ -207,7 +224,7 @@ public class NetworkHandler : MonoBehaviour
                 GameObject.Find(Index).GetComponent<ForDoor>().DoorUnlock();
                 GameObject.Find(Index).GetComponent<ForDoor>().DoorInteract();
             }
-            else if(Type == "UPDT")
+            else if (Type == "UPDT")
             {
                 float TimeToSetTo = float.Parse(strRdr.ReadLine());
                 WaitTime = TimeToSetTo;

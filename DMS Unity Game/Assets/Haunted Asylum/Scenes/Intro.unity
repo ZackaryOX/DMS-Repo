@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4944bdc535143643bc6990802be5ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Loading: {fileID: 0}
+  Video: {fileID: 1786517499}
 --- !u!1 &1118515227
 GameObject:
   m_ObjectHideFlags: 0
